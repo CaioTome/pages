@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars Without Number - Ficha de Nave Espacial</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Compartilhado SWN -->
+    <link rel="stylesheet" href="../../css/swn.css">
+</head>
+<body class="theme-nave">
+
+    <div class="header-bar">
+        <div>
+            <h1 class="brand-title">Nave Espacial</h1>
+            <div class="brand-subtitle">Stars Without Number: Revised Edition • Registro de Nave</div>
+        </div>
+        <div class="toolbar">
+            <button class="btn btn-primary" type="button" onclick="saveSheet()">Salvar</button>
+            <button class="btn" type="button" onclick="exportJSON()">Exportar JSON</button>
+            <button class="btn" type="button" onclick="document.getElementById('import-file').click()">Importar JSON</button>
+            <input type="file" id="import-file" style="display:none" onchange="importJSON(event)" accept=".json">
+            <button class="btn" type="button" onclick="toggleTheme()">Tema</button>
+            <button class="btn" type="button" onclick="window.print()">Imprimir</button>
+            <button class="btn btn-danger" type="button" onclick="resetSheet()">Limpar</button>
+        </div>
+    </div>
+
+    <form id="ship-sheet" class="sheet-container" onkeydown="if(event.key==='Enter' && event.target.tagName !== 'TEXTAREA') event.preventDefault();">
+
+        <!-- CARD 1: Identificação da Nave -->
+        <div class="card grid-col-12">
+            <div class="card-header">Identificação do Barco / Nave</div>
+            <div class="info-grid">
+                <div class="field-group">
+                    <label for="ship-name">Nome da Nave</label>
+                    <input type="text" id="ship-name" name="name" placeholder="Ex: A Sombra de Vesper">
+                </div>
+                <div class="field-group">
+                    <label for="ship-class">Classe de Casco (Hull Class)</label>
+                    <select id="ship-class" name="hull_class" onchange="calculateSheet()">
+                        <option value="Fighter">Caça / Cadeira Única (Fighter)</option>
+                        <option value="Frigate" selected>Fragata / Cargueiro Leve (Frigate)</option>
+                        <option value="Cruiser">Cruzador / Nave de Linha (Cruiser)</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="ship-type">Modelo / Tipo</label>
+                    <input type="text" id="ship-type" name="type" placeholder="Ex: Cargueiro Leve Classe-Free Merchant">
+                </div>
+                <div class="field-group">
+                    <label for="ship-owner">Proprietário / Fação</label>
+                    <input type="text" id="ship-owner" name="owner" placeholder="Ex: Tripulação Livre">
+                </div>
+                <div class="field-group">
+                    <label for="ship-maint">Manutenção Anual (₵)</label>
+                    <input type="text" id="ship-maint" name="maintenance" placeholder="25.000 ₵">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: Estatísticas de Desempenho -->
+        <div class="card grid-col-6">
+            <div class="card-header">Vigor & Desempenho</div>
+            <div class="vitals-grid">
+                <div class="vital-card accent-hp">
+                    <div class="vital-label">Pontos de Casco (HP)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="hp-current" name="hp_current" class="vital-input" value="40">
+                        <span style="color:var(--text-muted);">/</span>
+                        <input type="number" id="hp-max" name="hp_max" class="vital-input" value="40">
+                    </div>
+                </div>
+                <div class="vital-card accent-ac">
+                    <div class="vital-label">Armadura / CA</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="ac-val" name="ac" class="vital-input" value="14">
+                    </div>
+                </div>
+                <div class="vital-card accent-bab">
+                    <div class="vital-label">Velocidade</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="speed-val" name="speed" class="vital-input" value="1">
+                    </div>
+                </div>
+                <div class="vital-card accent-strain">
+                    <div class="vital-label">Motor de Salto (Drive)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="spike-val" name="spike_drive" class="vital-input" value="1">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
+                <div class="field-group">
+                    <label for="ship-crew">Tripulação (Min / Máx)</label>
+                    <input type="text" id="ship-crew" name="crew" placeholder="1 / 6">
+                </div>
+                <div class="field-group">
+                    <label for="ship-life">Suporte de Vida (Dias)</label>
+                    <input type="text" id="ship-life" name="life_support" placeholder="14 dias">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: Orçamento de Recursos (Energia, Massa e Carga) -->
+        <div class="card grid-col-6">
+            <div class="card-header">Orçamento de Recursos</div>
+            
+            <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                    <span>Energia (Power)</span>
+                    <span><strong id="power-used">0</strong> / <strong id="power-max">10</strong></span>
+                </div>
+                <div class="hp-progress-container">
+                    <div id="power-bar" class="hp-progress-bar" style="width: 0%; background: var(--accent-blue);"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                    <span>Massa (Mass)</span>
+                    <span><strong id="mass-used">0</strong> / <strong id="mass-max">15</strong></span>
+                </div>
+                <div class="hp-progress-container">
+                    <div id="mass-bar" class="hp-progress-bar" style="width: 0%; background: var(--accent-purple);"></div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
+                <div class="field-group">
+                    <label for="power-max-input">Energia Máxima</label>
+                    <input type="number" id="power-max-input" name="power_max" value="10" onchange="calculateSheet()">
+                </div>
+                <div class="field-group">
+                    <label for="mass-max-input">Massa Máxima</label>
+                    <input type="number" id="mass-max-input" name="mass_max" value="15" onchange="calculateSheet()">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: Armamento de Nave -->
+        <div class="card grid-col-12">
+            <div class="card-header">
+                <span>Montagens de Armas</span>
+                <button type="button" class="btn" onclick="addWeaponRow()">+ Arma de Nave</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Arma</th>
+                            <th>Dano</th>
+                            <th>Alcance</th>
+                            <th>Energia</th>
+                            <th>Massa</th>
+                            <th>Qualidades / Munição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weapons-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 5: Módulos e Sistemas Internos (Fittings) -->
+        <div class="card grid-col-8">
+            <div class="card-header">
+                <span>Módulos & Instalações (Fittings)</span>
+                <button type="button" class="btn" onclick="addFittingRow()">+ Módulo</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Módulo</th>
+                            <th style="width: 15%;">Energia</th>
+                            <th style="width: 15%;">Massa</th>
+                            <th style="width: 25%;">Efeito / Função</th>
+                            <th style="width: 10%;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fittings-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 6: Postos de Tripulação & Ações Táticas -->
+        <div class="card grid-col-4">
+            <div class="card-header">Postos de Tripulação</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="field-group">
+                    <label for="crew-cmd">Comandante</label>
+                    <input type="text" id="crew-cmd" name="crew_cmd" placeholder="Nome do Comandante">
+                </div>
+                <div class="field-group">
+                    <label for="crew-pilot">Piloto</label>
+                    <input type="text" id="crew-pilot" name="crew_pilot" placeholder="Nome do Piloto">
+                </div>
+                <div class="field-group">
+                    <label for="crew-sensor">Oficial de Sensores / Comunicação</label>
+                    <input type="text" id="crew-sensor" name="crew_sensor" placeholder="Nome do Oficial">
+                </div>
+                <div class="field-group">
+                    <label for="crew-gunner">Artilheiro Principal</label>
+                    <input type="text" id="crew-gunner" name="crew_gunner" placeholder="Nome do Artilheiro">
+                </div>
+                <div class="field-group">
+                    <label for="crew-eng">Engenheiro Chefe</label>
+                    <input type="text" id="crew-eng" name="crew_eng" placeholder="Nome do Engenheiro">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 7: Carga & Anotações -->
+        <div class="card grid-col-12">
+            <div class="card-header">Manifesto de Carga & Observações</div>
+            <div style="display:grid; grid-template-columns: 250px 1fr; gap: 16px;">
+                <div>
+                    <div class="field-group">
+                        <label for="ship-cargo-cap">Capacidade de Carga (Tons)</label>
+                        <input type="text" id="ship-cargo-cap" name="cargo_cap" placeholder="20 Tons">
+                    </div>
+                </div>
+                <div>
+                    <div class="field-group">
+                        <label for="ship-notes">Conteúdo do Porão / Anotações de Voo</label>
+                        <textarea id="ship-notes" name="notes" rows="4" placeholder="Cargas de troca, suprimentos sobressalentes, combustível Spike..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <!-- Modal Popup de Rolagem -->
+    <div class="modal-overlay" id="dice-modal-overlay" onclick="if(event.target===this) closeDiceModal();">
+        <div class="modal-content">
+            <h2 id="dice-result-text" class="dice-result-number" style="font-size:1.8rem; margin-bottom:10px;">Resultado</h2>
+            <div class="dice-breakdown" id="dice-details" style="font-size:1rem; padding:12px;">Detalhes</div>
+            <button type="button" class="btn btn-primary" style="margin-top:16px; width:100%; justify-content:center;" onclick="closeDiceModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scripts da Ficha -->
+    <script src="../../js/swn_nave.js"></script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZUHOME (水の家) — Ficha Oficial de Semikami</title>
+    <meta name="description" content="Ficha de personagem interativa para o RPG MIZUHOME com cálculos automáticos, poderes divinos, rolador de dados e estética japonesa tradicional.">
+
+    <!-- Google Fonts: Caligrafia & Tipografia Japonesa -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Noto+Serif+JP:wght@600;700;900&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Estilos Oficiais MIZUHOME -->
+    <link rel="stylesheet" href="../../css/mizuhome.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO PRINCIPAL & TORII BANNER -->
+    <header class="header-bar">
+        <div class="brand-container">
+            <div class="brand-icon">
+                <i class="fa-solid fa-torii-gate"></i>
+            </div>
+            <div>
+                <h1 class="brand-title">
+                    MIZUHOME <span class="kanji-sub">水の家</span>
+                </h1>
+                <p class="brand-subtitle">Registro Espiritual de Semikami • Refúgio dos Descendentes Divinos</p>
+            </div>
+        </div>
+
+        <!-- Barra de Ferramentas / Ações Rápidas -->
+        <div class="toolbar">
+            <button type="button" class="btn btn-primary" onclick="saveSheet()" title="Salvar Ficha Localmente">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar
+            </button>
+            <button type="button" class="btn btn-spirit" onclick="exportJSON()" title="Exportar Ficha em Arquivo JSON">
+                <i class="fa-solid fa-file-export"></i> Exportar JSON
+            </button>
+            <label class="btn" title="Importar Arquivo JSON de Backup" style="margin:0; cursor:pointer;">
+                <i class="fa-solid fa-file-import"></i> Importar JSON
+                <input type="file" id="import-file-input" accept=".json" style="display:none;" onchange="importJSON(event)">
+            </label>
+            <button type="button" class="btn btn-gold" onclick="openQuickRoller()" title="Abrir Rolador Livre de Dados">
+                <i class="fa-solid fa-dice-d20"></i> Rolar Dados
+            </button>
+            <button type="button" class="btn" onclick="performShortRest()" title="Descanso Curto (Recupera metade da Estamina)">
+                <i class="fa-solid fa-mug-hot"></i> Descanso Curto
+            </button>
+            <button type="button" class="btn" onclick="performLongRest()" title="Descanso Longo (Restaura PV e Estamina)">
+                <i class="fa-solid fa-bed"></i> Descanso Longo
+            </button>
+            <button type="button" class="btn" id="btn-toggle-theme" onclick="toggleTheme()" title="Alternar entre Pergaminho Washi e Noite Espiritual">
+                <i class="fa-solid fa-moon"></i> Noite Espiritual
+            </button>
+            <button type="button" class="btn" onclick="printSheet()" title="Imprimir ou Salvar em PDF">
+                <i class="fa-solid fa-print"></i> Imprimir
+            </button>
+            <button type="button" class="btn btn-danger" onclick="resetSheet()" title="Limpar e Criar Nova Ficha">
+                <i class="fa-solid fa-rotate-left"></i> Novo
+            </button>
+        </div>
+    </header>
+
+    <!-- NAVEGAÇÃO RÁPIDA POR ABAS -->
+    <nav class="quick-nav-bar">
+        <button type="button" class="quick-nav-btn active" onclick="switchTab('all', this)">
+            <i class="fa-solid fa-table-columns"></i> Visão Geral Completa
+        </button>
+        <button type="button" class="quick-nav-btn" onclick="switchTab('combat', this)">
+            <i class="fa-solid fa-shield-heart"></i> Combate & Vigor
+        </button>
+        <button type="button" class="quick-nav-btn" onclick="switchTab('skills', this)">
+            <i class="fa-solid fa-scroll"></i> Atributos & Perícias
+        </button>
+        <button type="button" class="quick-nav-btn" onclick="switchTab('powers', this)">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Poderes Divinos
+        </button>
+        <button type="button" class="quick-nav-btn" onclick="switchTab('gear', this)">
+            <i class="fa-solid fa-khanda"></i> Armas & Inventário
+        </button>
+        <button type="button" class="quick-nav-btn" onclick="switchTab('roleplay', this)">
+            <i class="fa-solid fa-feather-pointed"></i> Semikami & História
+        </button>
+    </nav>
+
+    <!-- FORMULÁRIO PRINCIPAL DA FICHA -->
+    <form id="character-sheet" onsubmit="return false;">
+        <main class="sheet-container">
+
+            <!-- CARD 1: DADOS BÁSICOS DO SEMIKAMI -->
+            <section class="card card-japanese grid-col-12" data-tab="all">
+                <div class="card-header">
+                    <span>Identificação do Semikami <span class="header-kanji">半神情報</span></span>
+                </div>
+                <div class="info-grid">
+                    <div class="field-group">
+                        <label for="char-name">Nome do Personagem</label>
+                        <input type="text" id="char-name" name="name" placeholder="Ex: Ren Takahashi (高橋 蓮)" onchange="saveSheet()">
+                    </div>
+                    <div class="field-group">
+                        <label for="char-player">Jogador</label>
+                        <input type="text" id="char-player" name="player" placeholder="Seu nome / apelido" onchange="saveSheet()">
+                    </div>
+                    <div class="field-group">
+                        <label for="char-kami">Pai / Mãe Divino (Kami Patrono)</label>
+                        <select id="char-kami" name="kami" onchange="saveSheet()">
+                            <option value="amaterasu">Amaterasu (Sol & Purificação)</option>
+                            <option value="inari">Inari (Arroz, Raposas & Sorte)</option>
+                            <option value="benten">Benten (Música & Eloquência)</option>
+                            <option value="susanoo">Susano'o (Tempestades & Mar)</option>
+                            <option value="orochi">Orochi (Serpente de Oito Cabeças)</option>
+                            <option value="sarutahiko">Sarutahiko (Encruzilhadas & Caminhos)</option>
+                            <option value="outro">Outro Kami / Divindade</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="char-class">Classe de Semikami</label>
+                        <select id="char-class" name="classe" onchange="calculateSheet(); saveSheet();">
+                            <option value="vanguarda">Vanguarda (Linha de Frente / Tanque)</option>
+                            <option value="erudito">Erudito (Estrategista / Suporte)</option>
+                            <option value="conjurador">Conjurador (Canalizador Divino)</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="char-level">Nível de Poder</label>
+                        <input type="number" id="char-level" name="level" value="1" min="1" max="20" onchange="saveSheet()">
+                    </div>
+                    <div class="field-group">
+                        <label for="char-age">Idade / Ocupação</label>
+                        <input type="text" id="char-age" name="age_occupation" placeholder="Ex: 17 anos • Estudante / Miko" onchange="saveSheet()">
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 2: VITAIS, RECURSOS & COMBATE -->
+            <section class="card card-japanese grid-col-7" data-tab="combat">
+                <div class="card-header">
+                    <span>Recursos Vitais & Defesas <span class="header-kanji">生命と防御</span></span>
+                </div>
+                
+                <div class="vitals-grid">
+                    <!-- Pontos de Vida (PV) -->
+                    <div class="vital-card accent-hp">
+                        <div class="vital-label"><i class="fa-solid fa-heart"></i> Pontos de Vida (PV)</div>
+                        <div class="vital-val-container">
+                            <input type="number" id="hp-current" name="hp_current" class="vital-input" placeholder="0" onchange="calculateSheet(); saveSheet();">
+                            <span class="vital-slash">/</span>
+                            <span id="hp-max" class="vital-max">32</span>
+                        </div>
+                        <div class="vital-quick-btns">
+                            <button type="button" class="btn btn-sm btn-danger" onclick="adjustVital('hp', -5)">-5</button>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="adjustVital('hp', -1)">-1</button>
+                            <button type="button" class="btn btn-sm" onclick="adjustVital('hp', 1)">+1</button>
+                            <button type="button" class="btn btn-sm" onclick="adjustVital('hp', 5)">+5</button>
+                        </div>
+                        <div class="progress-container">
+                            <div id="hp-bar" class="progress-bar-hp"></div>
+                        </div>
+                        <div style="font-size:0.75rem; margin-top:4px;">
+                            <span id="hp-status-text" style="font-weight:bold; color:var(--accent-green);">Saudável</span>
+                        </div>
+                    </div>
+
+                    <!-- Estamina (PE) -->
+                    <div class="vital-card accent-stamina">
+                        <div class="vital-label"><i class="fa-solid fa-fire-flame-curved"></i> Estamina (PE)</div>
+                        <div class="vital-val-container">
+                            <input type="number" id="stamina-current" name="stamina_current" class="vital-input" placeholder="0" onchange="calculateSheet(); saveSheet();">
+                            <span class="vital-slash">/</span>
+                            <span id="stamina-max" class="vital-max">12</span>
+                        </div>
+                        <div class="vital-quick-btns">
+                            <button type="button" class="btn btn-sm btn-spirit" onclick="adjustVital('stamina', -2)">-2</button>
+                            <button type="button" class="btn btn-sm btn-spirit" onclick="adjustVital('stamina', -1)">-1</button>
+                            <button type="button" class="btn btn-sm" onclick="adjustVital('stamina', 1)">+1</button>
+                            <button type="button" class="btn btn-sm" onclick="adjustVital('stamina', 2)">+2</button>
+                        </div>
+                        <div class="progress-container">
+                            <div id="stamina-bar" class="progress-bar-stamina"></div>
+                        </div>
+                        <div style="font-size:0.75rem; margin-top:4px; color:var(--accent-spirit); font-weight:bold;">
+                            Energia Espiritual
+                        </div>
+                    </div>
+
+                    <!-- Defesa Base & Reações -->
+                    <div class="vital-card accent-defense">
+                        <div class="vital-label"><i class="fa-solid fa-shield"></i> Defesa Total</div>
+                        <div class="vital-val-container">
+                            <span id="defense-val" style="font-family:var(--font-mono); font-size:1.6rem; font-weight:900; color:var(--accent-red);">12</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                            Base: 10 + AGI (+2 Vanguarda)
+                        </div>
+                        <div style="margin-top:6px; display:flex; gap:4px;">
+                            <button type="button" class="btn btn-sm" onclick="rollSkillTest('reflexos', 'Esquiva (Reflexos)', 'agilidade')" title="Esquivar: soma bônus de Reflexos à Defesa">
+                                <i class="fa-solid fa-person-running"></i> Esquivar
+                            </button>
+                            <button type="button" class="btn btn-sm" onclick="rollSkillTest('luta', 'Bloqueio (Luta)', 'forca')" title="Bloquear: reduz dano pelo bônus de Luta">
+                                <i class="fa-solid fa-shield-halved"></i> Bloquear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deslocamento & Ações -->
+                    <div class="vital-card accent-movement">
+                        <div class="vital-label"><i class="fa-solid fa-shoe-prints"></i> Deslocamento</div>
+                        <div class="vital-val-container">
+                            <span id="movement-val" style="font-family:var(--font-mono); font-size:1.5rem; font-weight:800; color:var(--accent-green);">9m</span>
+                        </div>
+                        <div style="font-size:0.73rem; color:var(--text-muted); margin-top:4px;">
+                            1 Padrão • 1 Movimento • 1 Reação
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL DE AGONIA (Morte e Agonia ao atingir 0 PV) -->
+                <div id="agonia-panel" class="agonia-panel">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="color:var(--accent-red); font-family:var(--font-title);">
+                            <i class="fa-solid fa-skull-crossbones"></i> ESTADO DE AGONIA (0 PV ou menos)
+                        </strong>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="rollAgoniaSave()">
+                            <i class="fa-solid fa-dice-d20"></i> Teste de Fortitude
+                        </button>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-main); margin:6px 0;">
+                        No início de cada um dos 3 turnos, realize um teste de Fortitude. Cada falha gera 1 Falha de Morte (Falha Crítica no 1 = 2 Falhas). 3 falhas = Morte.
+                    </p>
+                    <div class="death-saves">
+                        <span style="font-size:0.8rem; font-weight:bold; color:var(--text-muted);">Falhas de Morte:</span>
+                        <div class="death-save-circle" id="death-save-0" onclick="toggleDeathSaveCircle(0)"></div>
+                        <div class="death-save-circle" id="death-save-1" onclick="toggleDeathSaveCircle(1)"></div>
+                        <div class="death-save-circle" id="death-save-2" onclick="toggleDeathSaveCircle(2)"></div>
+                        <button type="button" class="btn btn-sm" onclick="stabilizeCharacter()" style="margin-left:auto;">
+                            <i class="fa-solid fa-kit-medical"></i> Estabilizar (Medicina DT 15/10)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CONDIÇÕES & STATUS DE COMBATE -->
+                <div style="margin-top:14px;">
+                    <label style="display:block; margin-bottom:4px;">Condições Ativas de Combate:</label>
+                    <div class="condition-badges">
+                        <span class="badge badge-perturbado" data-condition="perturbado" onclick="toggleConditionBadge(this, 'perturbado')" title="Penalidade de -1 dado em qualquer ação ou reação">
+                            <i class="fa-solid fa-brain"></i> Perturbado (-1 Dado)
+                        </span>
+                        <span class="badge badge-restrito" data-condition="restrito" onclick="toggleConditionBadge(this, 'restrito')" title="Perde todas as ações e reações">
+                            <i class="fa-solid fa-link"></i> Restrito (Sem Ações)
+                        </span>
+                        <span class="badge badge-envergonhado" data-condition="envergonhado" onclick="toggleConditionBadge(this, 'envergonhado')" title="Perde reações (Esquivar / Bloquear)">
+                            <i class="fa-solid fa-face-flushed"></i> Envergonhado (Sem Reações)
+                        </span>
+                        <span class="badge badge-envenenado" data-condition="envenenado" onclick="toggleConditionBadge(this, 'envenenado')" title="Dano contínuo de ácido a cada rodada">
+                            <i class="fa-solid fa-biohazard"></i> Envenenado (Ácido)
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CARD 3: ATRIBUTOS PRIMÁRIOS (10 PONTOS INICIAIS) -->
+            <section class="card card-japanese grid-col-5" data-tab="skills">
+                <div class="card-header">
+                    <span>Atributos Primários <span class="header-kanji">五大属性</span></span>
+                    <span id="attr-points-total" class="points-badge valid">10 / 10</span>
+                </div>
+                
+                <div class="attributes-grid">
+                    <!-- Vigor -->
+                    <div class="attr-box">
+                        <div class="attr-title">Vigor <span class="attr-kanji">体</span></div>
+                        <div class="attr-input-container">
+                            <input type="number" id="attr-vig" name="vig" class="attr-score-input" value="2" min="1" max="10" onchange="calculateSheet(); saveSheet();">
+                        </div>
+                        <button type="button" class="btn-roll-attr" onclick="rollPureAttribute('vig', 'Vigor')">
+                            <i class="fa-solid fa-dice-d20"></i> Rolar
+                        </button>
+                    </div>
+
+                    <!-- Agilidade -->
+                    <div class="attr-box">
+                        <div class="attr-title">Agilidade <span class="attr-kanji">敏</span></div>
+                        <div class="attr-input-container">
+                            <input type="number" id="attr-agi" name="agi" class="attr-score-input" value="2" min="1" max="10" onchange="calculateSheet(); saveSheet();">
+                        </div>
+                        <button type="button" class="btn-roll-attr" onclick="rollPureAttribute('agi', 'Agilidade')">
+                            <i class="fa-solid fa-dice-d20"></i> Rolar
+                        </button>
+                    </div>
+
+                    <!-- Força -->
+                    <div class="attr-box">
+                        <div class="attr-title">Força <span class="attr-kanji">力</span></div>
+                        <div class="attr-input-container">
+                            <input type="number" id="attr-for" name="for" class="attr-score-input" value="2" min="1" max="10" onchange="calculateSheet(); saveSheet();">
+                        </div>
+                        <button type="button" class="btn-roll-attr" onclick="rollPureAttribute('for', 'Força')">
+                            <i class="fa-solid fa-dice-d20"></i> Rolar
+                        </button>
+                    </div>
+
+                    <!-- Intelecto -->
+                    <div class="attr-box">
+                        <div class="attr-title">Intelecto <span class="attr-kanji">知</span></div>
+                        <div class="attr-input-container">
+                            <input type="number" id="attr-int" name="int" class="attr-score-input" value="2" min="1" max="10" onchange="calculateSheet(); saveSheet();">
+                        </div>
+                        <button type="button" class="btn-roll-attr" onclick="rollPureAttribute('int', 'Intelecto')">
+                            <i class="fa-solid fa-dice-d20"></i> Rolar
+                        </button>
+                    </div>
+
+                    <!-- Presença -->
+                    <div class="attr-box">
+                        <div class="attr-title">Presença <span class="attr-kanji">霊</span></div>
+                        <div class="attr-input-container">
+                            <input type="number" id="attr-pre" name="pre" class="attr-score-input" value="2" min="1" max="10" onchange="calculateSheet(); saveSheet();">
+                        </div>
+                        <button type="button" class="btn-roll-attr" onclick="rollPureAttribute('pre', 'Presença')">
+                            <i class="fa-solid fa-dice-d20"></i> Rolar
+                        </button>
+                    </div>
+                </div>
+
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:10px; text-align:center;">
+                    Distribua 10 pontos iniciais. Em testes, você rola <strong>[Atributo]d20</strong> e mantém o maior resultado.
+                </div>
+            </section>
+
+            <!-- CARD 4: PERÍCIAS OFICIAIS (19 PERÍCIAS) -->
+            <section class="card card-japanese grid-col-6" data-tab="skills">
+                <div class="card-header">
+                    <span>Perícias Mundanas & Espirituais <span class="header-kanji">技能一覧</span></span>
+                    <span id="skills-trained-count" style="font-family:var(--font-mono); font-size:0.85rem; color:var(--text-muted);">
+                        0 / 7 Treinadas
+                    </span>
+                </div>
+                
+                <!-- Lista de Perícias Renderizada Dinamicamente -->
+                <div class="skills-container" id="skills-container"></div>
+            </section>
+
+            <!-- CARD 5: PODERES DIVINOS (MIZUHOME — PODERES) -->
+            <section class="card card-japanese grid-col-6" data-tab="powers">
+                <div class="card-header">
+                    <span>Poderes Divinos dos Kamis <span class="header-kanji">神の加護</span></span>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="openCatalogModal('powers-catalog-modal')">
+                        <i class="fa-solid fa-plus"></i> Poder do Catálogo
+                    </button>
+                </div>
+                
+                <div id="powers-container">
+                    <!-- Poderes Injetados pelo JavaScript -->
+                </div>
+            </section>
+
+            <!-- CARD 6: ARMAS & ATAQUES -->
+            <section class="card card-japanese grid-col-12" data-tab="gear">
+                <div class="card-header">
+                    <span>Armamentos & Ataques <span class="header-kanji">武具一覧</span></span>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openCatalogModal('weapons-catalog-modal')">
+                            <i class="fa-solid fa-plus"></i> Arma do Catálogo
+                        </button>
+                        <button type="button" class="btn btn-sm" onclick="addWeapon()">
+                            <i class="fa-solid fa-pen"></i> Arma Customizada
+                        </button>
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table class="custom-table" id="weapons-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Arma & Tipo</th>
+                                <th style="width: 15%;">Atributo Base</th>
+                                <th style="width: 15%;">Dano</th>
+                                <th style="width: 18%;">Alcance / Munição</th>
+                                <th style="width: 10%;">Espaço</th>
+                                <th style="width: 17%;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weapons-body">
+                            <!-- Armas Renderizadas Dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:8px;">
+                    *Crítico: Se a rolagem de ataque resultar em <strong>20 Natural</strong> no dado, o dano é automaticamente duplicado (x2)!
+                </div>
+            </section>
+
+            <!-- CARD 7: INVENTÁRIO & CAPACIDADE DE CARGA -->
+            <section class="card card-japanese grid-col-7" data-tab="gear">
+                <div class="card-header">
+                    <span>Inventário & Mochila <span class="header-kanji">所持品</span></span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">
+                            Carga: <strong id="inventory-capacity-current">0</strong> / <strong id="inventory-capacity-max">10</strong> esp
+                        </span>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openCatalogModal('items-catalog-modal')">
+                            <i class="fa-solid fa-plus"></i> Item do Catálogo
+                        </button>
+                        <button type="button" class="btn btn-sm" onclick="addItem({ nome: 'Novo Item', espaco: 1, descricao: '' })">
+                            <i class="fa-solid fa-pen"></i> Item Custom
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress-container" style="margin-bottom:12px;">
+                    <div id="inventory-load-bar" style="height:100%; width:0%; background:var(--accent-gold); transition:width 0.3s ease;"></div>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table class="custom-table" id="items-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Item & Descrição</th>
+                                <th style="width: 15%;">Qtd</th>
+                                <th style="width: 15%;">Espaço</th>
+                                <th style="width: 20%;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-body">
+                            <!-- Itens Renderizados Dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CARD 8: HISTÓRICO DE ROLAGENS -->
+            <section class="card card-japanese grid-col-5" data-tab="all">
+                <div class="card-header">
+                    <span>Histórico de Rolagens <span class="header-kanji">賽の履歴</span></span>
+                    <button type="button" class="btn btn-sm" onclick="sheetState.diceHistory=[]; renderDiceHistory();">Limpar</button>
+                </div>
+                <div id="dice-history-list" style="max-height:240px; overflow-y:auto;">
+                    <div style="text-align:center; color:var(--text-muted); padding:16px; font-size:0.82rem;">Nenhuma rolagem efetuada nesta sessão.</div>
+                </div>
+            </section>
+
+            <!-- CARD 9: DETALHES DE ROLEPLAY & BACKGROUND -->
+            <section class="card card-japanese grid-col-12" data-tab="roleplay">
+                <div class="card-header">
+                    <span>História, Linhagem Divina & Conexão Xintoísta <span class="header-kanji">神話と背景</span></span>
+                </div>
+                <div class="info-grid">
+                    <div class="field-group" style="grid-column: span 2;">
+                        <label for="char-background">Origem & Linhagem do Pai/Mãe Divino</label>
+                        <textarea id="char-background" name="background" rows="4" placeholder="Como descobriu sua descendência divina? Como foi o despertar dos seus poderes espirituais e a chegada a Mizuhome?" onchange="saveSheet()"></textarea>
+                    </div>
+                    <div class="field-group" style="grid-column: span 2;">
+                        <label for="char-personality">Personalidade & Comportamento</label>
+                        <textarea id="char-personality" name="personality" rows="4" placeholder="Traços marcantes, manias, virtudes, medos e motivações do personagem..." onchange="saveSheet()"></textarea>
+                    </div>
+                    <div class="field-group" style="grid-column: span 2;">
+                        <label for="char-shinto">Ligação Cultural & Rituais Xintoístas</label>
+                        <textarea id="char-shinto" name="shinto_connection" rows="3" placeholder="Santuários frequentados, amuletos de família (omamori), práticas de purificação ou oferendas..." onchange="saveSheet()"></textarea>
+                    </div>
+                    <div class="field-group" style="grid-column: span 2;">
+                        <label for="char-notes">Anotações de Missões & Sessões</label>
+                        <textarea id="char-notes" name="session_notes" rows="3" placeholder="Pistas de investigação, nomes de NPCs, dívidas de honra e segredos espirituais..." onchange="saveSheet()"></textarea>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </form>
+
+    <!-- ==========================================================================
+         MODAIS POPUP (Rolagem de Dados, Catálogos de Kamis, Armas e Itens)
+         ========================================================================== -->
+
+    <!-- Modal 1: Exibição do Resultado de Dados -->
+    <div class="modal-overlay" id="dice-result-modal" onclick="if(event.target===this) closeDiceModal();">
+        <div class="modal-content" style="max-width:480px; text-align:center;">
+            <button type="button" class="modal-close-btn" onclick="closeDiceModal()">&times;</button>
+            <h2 id="modal-dice-title" style="font-family:var(--font-title); color:var(--accent-red); font-size:1.15rem; margin-bottom:12px;">Rolagem</h2>
+            <div class="dice-result-banner">
+                <div id="modal-dice-result-number" class="dice-result-number">20</div>
+                <div id="modal-dice-breakdown" class="dice-breakdown">3d20: [14, 20, 8] + 5</div>
+            </div>
+            <p id="modal-dice-details" style="font-size:0.9rem; color:var(--text-main); font-weight:bold; min-height:22px;"></p>
+            <button type="button" class="btn btn-primary" style="margin-top:16px; width:100%; justify-content:center;" onclick="closeDiceModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Modal 2: Rolador Rápido Livre de Dados -->
+    <div class="modal-overlay" id="quick-roller-modal" onclick="if(event.target===this) closeQuickRoller();">
+        <div class="modal-content" style="max-width:520px;">
+            <button type="button" class="modal-close-btn" onclick="closeQuickRoller()">&times;</button>
+            <h2 style="font-family:var(--font-title); color:var(--accent-red); margin-bottom:16px;">
+                <i class="fa-solid fa-dice-d20"></i> Rolador Livre de Dados
+            </h2>
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+                <div class="field-group" style="flex:1;">
+                    <label>Quantidade de Dados:</label>
+                    <input type="number" id="free-dice-count" value="1" min="1" max="20">
+                </div>
+                <div class="field-group" style="flex:1;">
+                    <label>Modificador (+ / -):</label>
+                    <input type="number" id="free-dice-mod" value="0">
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;">
+                <button type="button" class="btn btn-primary" onclick="executeFreeRoll(4)">d4</button>
+                <button type="button" class="btn btn-primary" onclick="executeFreeRoll(6)">d6</button>
+                <button type="button" class="btn btn-primary" onclick="executeFreeRoll(8)">d8</button>
+                <button type="button" class="btn btn-primary" onclick="executeFreeRoll(10)">d10</button>
+                <button type="button" class="btn btn-primary" onclick="executeFreeRoll(12)">d12</button>
+                <button type="button" class="btn btn-gold" onclick="executeFreeRoll(20)">d20</button>
+                <button type="button" class="btn btn-spirit" onclick="executeFreeRoll(100)">d100</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Catálogo Oficial de Poderes Divinos -->
+    <div class="modal-overlay" id="powers-catalog-modal" onclick="if(event.target===this) closeCatalogModal('powers-catalog-modal');">
+        <div class="modal-content">
+            <button type="button" class="modal-close-btn" onclick="closeCatalogModal('powers-catalog-modal')">&times;</button>
+            <h2 style="font-family:var(--font-title); color:var(--accent-red); margin-bottom:16px;">
+                <i class="fa-solid fa-torii-gate"></i> Catálogo dos 6 Kamis Divinos
+            </h2>
+            <div id="kami-catalog-list"></div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Catálogo Oficial de Armamentos -->
+    <div class="modal-overlay" id="weapons-catalog-modal" onclick="if(event.target===this) closeCatalogModal('weapons-catalog-modal');">
+        <div class="modal-content">
+            <button type="button" class="modal-close-btn" onclick="closeCatalogModal('weapons-catalog-modal')">&times;</button>
+            <h2 style="font-family:var(--font-title); color:var(--accent-red); margin-bottom:16px;">
+                <i class="fa-solid fa-khanda"></i> Catálogo de Armamentos Oficiais
+            </h2>
+            <div id="weapon-catalog-list"></div>
+        </div>
+    </div>
+
+    <!-- Modal 5: Catálogo Oficial de Itens Básicos -->
+    <div class="modal-overlay" id="items-catalog-modal" onclick="if(event.target===this) closeCatalogModal('items-catalog-modal');">
+        <div class="modal-content">
+            <button type="button" class="modal-close-btn" onclick="closeCatalogModal('items-catalog-modal')">&times;</button>
+            <h2 style="font-family:var(--font-title); color:var(--accent-red); margin-bottom:16px;">
+                <i class="fa-solid fa-box-open"></i> Catálogo de Itens Básicos
+            </h2>
+            <div id="item-catalog-list"></div>
+        </div>
+    </div>
+
+    <!-- Container de Notificações Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts da Ficha -->
+    <script src="../../js/mizuhome_data.js"></script>
+    <script src="../../js/mizuhome_app.js"></script>
+</body>
+</html>

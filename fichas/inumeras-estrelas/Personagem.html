@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars Without Number - Ficha de Personagem</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Compartilhado SWN -->
+    <link rel="stylesheet" href="../../css/swn.css">
+</head>
+<body>
+
+    <!-- Header Principal da Ficha -->
+    <div class="header-bar">
+        <div>
+            <div class="brand-title">Stars Without Number</div>
+            <div class="brand-subtitle">Ficha de Personagem • Setor Mandato</div>
+        </div>
+        
+        <!-- Barra de Ferramentas -->
+        <div class="toolbar">
+            <button type="button" class="btn btn-primary" onclick="saveSheet()" title="Salvar Ficha">Salvar</button>
+            <button type="button" class="btn" onclick="exportJSON()" title="Exportar para arquivo JSON">Exportar JSON</button>
+            <label class="btn" title="Carregar arquivo JSON" style="margin:0; cursor:pointer;">
+                Importar JSON
+                <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importJSON(event)">
+            </label>
+            <button type="button" class="btn" onclick="openQuickDiceModal()" title="Rolador Livre de Dados">Rolar Dados</button>
+            <button type="button" class="btn" onclick="toggleTheme()" title="Alternar Tema Claro/Escuro">Tema</button>
+            <button type="button" class="btn" onclick="window.print()" title="Imprimir ou Salvar em PDF">Imprimir</button>
+            <button type="button" class="btn btn-danger" onclick="resetSheet()" title="Limpar todos os campos">Limpar</button>
+        </div>
+    </div>
+
+    <!-- Navegação Rápida por Abas -->
+    <div class="quick-nav-bar" id="quick-nav-bar">
+        <button type="button" class="quick-nav-btn active" onclick="switchNavTab('all', this)">Todos os Blocos</button>
+        <button type="button" class="quick-nav-btn" onclick="switchNavTab('combat', this)">Geral / Combate</button>
+        <button type="button" class="quick-nav-btn" onclick="switchNavTab('skills', this)">Perícias / Focos</button>
+        <button type="button" class="quick-nav-btn" onclick="switchNavTab('equip', this)">Itens / Notas</button>
+    </div>
+
+    <form id="character-sheet" class="sheet-container" onkeydown="if(event.key==='Enter' && event.target.tagName !== 'TEXTAREA') event.preventDefault();">
+        
+        <!-- CARD 1: Dados Básicos -->
+        <div class="card grid-col-12" data-tab="combat">
+            <div class="card-header">Identificação do Agente</div>
+            <div class="info-grid">
+                <div class="field-group">
+                    <label for="char-name">Nome do Personagem</label>
+                    <input type="text" id="char-name" name="name" placeholder="Ex: Valen Vance">
+                </div>
+                <div class="field-group">
+                    <label for="char-class">Classe</label>
+                    <select id="char-class" name="class" onchange="calculateSheet()">
+                        <option value="Especialista">Especialista (Expert)</option>
+                        <option value="Guerreiro">Guerreiro (Warrior)</option>
+                        <option value="Psíquico">Psíquico (Psychic)</option>
+                        <option value="Aventureiro">Aventureiro (Adventurer)</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="char-bg">Antecedente (Background)</label>
+                    <input type="text" id="char-bg" name="background" placeholder="Ex: Piloto de Carga">
+                </div>
+                <div class="field-group">
+                    <label for="char-homeworld">Planeta de Origem</label>
+                    <input type="text" id="char-homeworld" name="homeworld" placeholder="Ex: Terra / Mandato">
+                </div>
+                <div class="field-group" style="max-width: 90px;">
+                    <label for="char-level">Nível</label>
+                    <input type="number" id="char-level" name="level" value="1" min="1" max="20" onchange="calculateSheet()">
+                </div>
+                <div class="field-group">
+                    <label for="char-xp">Pontos de XP</label>
+                    <input type="text" id="char-xp" name="xp" placeholder="0 / 3">
+                </div>
+                <div class="field-group">
+                    <label for="char-player">Jogador</label>
+                    <input type="text" id="char-player" name="player" placeholder="Seu nome">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: Atributos & Salvaguardas -->
+        <div class="card grid-col-8" data-tab="combat">
+            <div class="card-header">Atributos Primários</div>
+            <div class="attributes-grid">
+                <!-- STR -->
+                <div class="attr-box">
+                    <div class="attr-title">Força (FOR)</div>
+                    <div class="attr-input-container">
+                        <input type="number" id="attr-str" name="str" class="attr-score-input" value="10" min="3" max="18" onchange="calculateSheet()">
+                        <span id="mod-str" class="attr-mod-badge">+0</span>
+                    </div>
+                </div>
+                <!-- DEX -->
+                <div class="attr-box">
+                    <div class="attr-title">Destreza (DES)</div>
+                    <div class="attr-input-container">
+                        <input type="number" id="attr-dex" name="dex" class="attr-score-input" value="10" min="3" max="18" onchange="calculateSheet()">
+                        <span id="mod-dex" class="attr-mod-badge">+0</span>
+                    </div>
+                </div>
+                <!-- CON -->
+                <div class="attr-box">
+                    <div class="attr-title">Constituição (CON)</div>
+                    <div class="attr-input-container">
+                        <input type="number" id="attr-con" name="con" class="attr-score-input" value="10" min="3" max="18" onchange="calculateSheet()">
+                        <span id="mod-con" class="attr-mod-badge">+0</span>
+                    </div>
+                </div>
+                <!-- INT -->
+                <div class="attr-box">
+                    <div class="attr-title">Inteligência (INT)</div>
+                    <div class="attr-input-container">
+                        <input type="number" id="attr-int" name="int" class="attr-score-input" value="10" min="3" max="18" onchange="calculateSheet()">
+                        <span id="mod-int" class="attr-mod-badge">+0</span>
+                    </div>
+                </div>
+                <!-- WIS -->
+                <div class="attr-box">
+                    <div class="attr-title">Sabedoria (SAB)</div>
+                    <div class="attr-input-container">
+                        <input type="number" id="attr-wis" name="wis" class="attr-score-input" value="10" min="3" max="18" onchange="calculateSheet()">
+                        <span id="mod-wis" class="attr-mod-badge">+0</span>
+                    </div>
+                </div>
+                <!-- CHA -->
+                <div class="attr-box">
+                    <div class="attr-title">Carisma (CAR)</div>
+                    <div class="attr-input-container">
+                        <input type="number" id="attr-cha" name="cha" class="attr-score-input" value="10" min="3" max="18" onchange="calculateSheet()">
+                        <span id="mod-cha" class="attr-mod-badge">+0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salvaguardas abaixo dos atributos -->
+            <div class="card-header" style="margin-top: 20px;">Salvaguardas (Resistências)</div>
+            <div class="vitals-grid">
+                <div class="vital-card">
+                    <div class="vital-label">Física</div>
+                    <div id="save-physical" style="font-family:var(--font-mono); font-size:1.3rem; font-weight:bold; color:var(--accent-cyan); margin:4px 0;">15+</div>
+                    <button type="button" class="btn" style="font-size:0.75rem; padding: 2px 8px;" onclick="rollSave('Física', document.getElementById('save-physical').innerText)">Testar</button>
+                </div>
+                <div class="vital-card">
+                    <div class="vital-label">Evasão</div>
+                    <div id="save-evasion" style="font-family:var(--font-mono); font-size:1.3rem; font-weight:bold; color:var(--accent-cyan); margin:4px 0;">15+</div>
+                    <button type="button" class="btn" style="font-size:0.75rem; padding: 2px 8px;" onclick="rollSave('Evasão', document.getElementById('save-evasion').innerText)">Testar</button>
+                </div>
+                <div class="vital-card">
+                    <div class="vital-label">Mental</div>
+                    <div id="save-mental" style="font-family:var(--font-mono); font-size:1.3rem; font-weight:bold; color:var(--accent-cyan); margin:4px 0;">15+</div>
+                    <button type="button" class="btn" style="font-size:0.75rem; padding: 2px 8px;" onclick="rollSave('Mental', document.getElementById('save-mental').innerText)">Testar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: Vigor & Estatísticas de Combate -->
+        <div class="card grid-col-4" data-tab="combat">
+            <div class="card-header">Vigor & Combate</div>
+            <div class="vitals-grid">
+                <div class="vital-card accent-hp">
+                    <div class="vital-label">Pontos de Vida</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="hp-current" name="hp_current" class="vital-input" placeholder="0" onchange="calculateSheet()">
+                        <span class="vital-slash">/</span>
+                        <input type="number" id="hp-max" name="hp_max" class="vital-input" placeholder="0" onchange="calculateSheet()">
+                    </div>
+                </div>
+                <div class="vital-card accent-ac">
+                    <div class="vital-label">Classe de Armadura</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="ac-val" name="ac" class="vital-input" value="10">
+                    </div>
+                </div>
+                <div class="vital-card accent-bab">
+                    <div class="vital-label">BBA (Bônus Ataque)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="bab-val" name="bab" class="vital-input" value="0" onchange="calculateSheet()">
+                    </div>
+                </div>
+                <div class="vital-card accent-strain">
+                    <div class="vital-label">Estresse Sistêmico</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="strain-current" name="strain_current" class="vital-input" value="0">
+                        <span class="vital-slash">/</span>
+                        <span id="strain-max" style="font-family:var(--font-mono); font-weight:bold;">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Vida Visual & Status de Saúde -->
+            <div style="margin-top: 14px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 700; margin-bottom: 4px;">
+                    <span style="color: var(--text-muted); text-transform: uppercase;">Estado de Saúde</span>
+                    <span id="hp-status-text" style="color: var(--accent-green);">Saudável</span>
+                </div>
+                <div class="hp-progress-container">
+                    <div id="hp-bar" class="hp-progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Badges de Condição -->
+            <div style="margin-top: 12px;">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px;">Condições Ativas</span>
+                <div class="condition-badges" id="condition-badges">
+                    <span class="badge" onclick="toggleCondition(this)">Ferido</span>
+                    <span class="badge" onclick="toggleCondition(this)">Inconsciente</span>
+                    <span class="badge" onclick="toggleCondition(this)">Estressado</span>
+                    <span class="badge" onclick="toggleCondition(this)">Atordoado</span>
+                    <span class="badge" onclick="toggleCondition(this)">Sob Pressão</span>
+                </div>
+            </div>
+
+            <!-- Seção de Esforço Psíquico -->
+            <div class="card-header" style="margin-top: 20px;">Esforço Psíquico (Effort)</div>
+            <div class="vitals-grid">
+                <div class="vital-card" style="border-top: 3px solid var(--accent-purple);">
+                    <div class="vital-label">Esforço Disponível</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="effort-current" name="effort_current" class="vital-input" value="0">
+                        <span class="vital-slash">/</span>
+                        <span id="effort-max" style="font-family:var(--font-mono); font-weight:bold;">0</span>
+                    </div>
+                </div>
+                <div class="vital-card">
+                    <div class="vital-label">Cena</div>
+                    <input type="number" id="effort-scene" name="effort_scene" class="vital-input" value="0">
+                </div>
+                <div class="vital-card">
+                    <div class="vital-label">Dia</div>
+                    <input type="number" id="effort-day" name="effort_day" class="vital-input" value="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: Perícias (Skills) -->
+        <div class="card grid-col-6" data-tab="skills">
+            <div class="card-header">
+                <span>Perícias (Roll: 2d6 + Mod + Perícia)</span>
+            </div>
+            <div class="skills-list" id="skills-container"></div>
+        </div>
+
+        <!-- CARD 5: Armas & Ataques -->
+        <div class="card grid-col-6" data-tab="combat">
+            <div class="card-header">
+                <span>Armas & Ataques</span>
+                <button type="button" class="btn" id="add-weapon-btn" onclick="addWeaponRow()">+ Arma</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table" id="weapons-table">
+                    <thead>
+                        <tr>
+                            <th>Arma</th>
+                            <th>Atributo</th>
+                            <th>Perícia</th>
+                            <th>Dano</th>
+                            <th>Alcance / Mun.</th>
+                            <th>Ações</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="weapons-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 6: Focos, Capacidades & Psionismo -->
+        <div class="card grid-col-6" data-tab="skills">
+            <div class="card-header">
+                <span>Focos & Habilidades Psíquicas</span>
+                <button type="button" class="btn" id="add-focus-btn" onclick="addFocusRow()">+ Foco/Técnica</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table" id="foci-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Nome</th>
+                            <th style="width: 20%;">Nível/Tipo</th>
+                            <th style="width: 40%;">Descrição / Efeito</th>
+                            <th style="width: 10%;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="foci-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 7: Equipamentos & Carga (Encumbrance) -->
+        <div class="card grid-col-6" data-tab="equip">
+            <div class="card-header">
+                <span>Equipamentos & Carga</span>
+                <button type="button" class="btn" id="add-item-btn" onclick="addItemRow()">+ Item</button>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:6px;">
+                <span>Carga Pronta: <strong id="enc-readied-val">0</strong> / <strong id="enc-readied-max">5</strong></span>
+                <span>Carga Guardada: <strong id="enc-stowed-val">0</strong> / <strong id="enc-stowed-max">10</strong></span>
+            </div>
+            <div class="hp-progress-container">
+                <div id="enc-bar" class="hp-progress-bar"></div>
+            </div>
+
+            <div style="overflow-x:auto; margin-top:12px;">
+                <table class="custom-table" id="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Item</th>
+                            <th style="width: 25%;">Local</th>
+                            <th style="width: 20%;">Carga</th>
+                            <th style="width: 10%;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 8: Anotações & Créditos -->
+        <div class="card grid-col-12" data-tab="equip">
+            <div class="card-header">Créditos, Idiomas e Anotações Gerais</div>
+            <div class="info-grid">
+                <div class="field-group">
+                    <label for="char-credits">Créditos (₵)</label>
+                    <input type="text" id="char-credits" name="credits" placeholder="100 ₵">
+                </div>
+                <div class="field-group">
+                    <label for="char-languages">Idiomas Conhecidos</label>
+                    <textarea id="char-languages" name="languages" rows="3" placeholder="Comum, Neopragmático..."></textarea>
+                </div>
+                <div class="field-group" style="grid-column: span 2;">
+                    <label for="char-notes">Anotações da Missão / Histórico</label>
+                    <textarea id="char-notes" name="notes" rows="3" placeholder="Objetivos atuais, contatos no setor, dívidas..."></textarea>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <!-- Modal Popup de Rolagem de Dados -->
+    <div class="modal-overlay" id="dice-modal-overlay" onclick="if(event.target===this) closeDiceModal();">
+        <div class="modal-content">
+            <h2 id="dice-result-text" class="dice-result-number" style="font-size:1.8rem; margin-bottom:10px;">Resultado</h2>
+            <div class="dice-breakdown" id="dice-details" style="font-size:1rem; padding:12px;">Detalhes</div>
+            <button type="button" class="btn btn-primary" style="margin-top:16px; width:100%; justify-content:center;" onclick="closeDiceModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Modal Rolador Rápido Livre -->
+    <div class="modal-overlay" id="quick-dice-overlay" onclick="if(event.target===this) closeQuickDiceModal();">
+        <div class="modal-content">
+            <h2 style="font-family:var(--font-title); color:var(--accent-cyan); margin-bottom:14px;">Rolador de Dados</h2>
+            <div style="display:flex; gap:10px; margin-bottom:14px;">
+                <div class="field-group" style="flex:1;">
+                    <label>Quantidade:</label>
+                    <input type="number" id="quick-dice-count" value="1" min="1" max="10">
+                </div>
+                <div class="field-group" style="flex:1;">
+                    <label>Modificador:</label>
+                    <input type="number" id="quick-dice-mod" value="0">
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;">
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(4)">d4</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(6)">d6</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(8)">d8</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(10)">d10</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(12)">d12</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(20)">d20</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(6, true)">2d6</button>
+                <button type="button" class="btn btn-primary" onclick="rollFreeDice(100)">d100</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts da Ficha -->
+    <script src="../../js/swn_personagem.js"></script>
+</body>
+</html>

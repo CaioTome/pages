@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars Without Number - Ficha de Veículo / Drone</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Compartilhado SWN -->
+    <link rel="stylesheet" href="../../css/swn.css">
+</head>
+<body class="theme-veiculo">
+
+    <div class="header-bar">
+        <div>
+            <h1 class="brand-title">Veículo / Drone</h1>
+            <div class="brand-subtitle">Stars Without Number: Revised Edition • Ficha de Veículo & Drone</div>
+        </div>
+        <div class="toolbar">
+            <button class="btn btn-primary" type="button" onclick="saveSheet()">Salvar</button>
+            <button class="btn" type="button" onclick="exportJSON()">Exportar JSON</button>
+            <button class="btn" type="button" onclick="document.getElementById('import-file').click()">Importar JSON</button>
+            <input type="file" id="import-file" style="display:none" onchange="importJSON(event)" accept=".json">
+            <button class="btn" type="button" onclick="toggleTheme()">Tema</button>
+            <button class="btn" type="button" onclick="window.print()">Imprimir</button>
+            <button class="btn btn-danger" type="button" onclick="resetSheet()">Limpar</button>
+        </div>
+    </div>
+
+    <form id="vehicle-sheet" class="sheet-container" onkeydown="if(event.key==='Enter' && event.target.tagName !== 'TEXTAREA') event.preventDefault();">
+
+        <!-- CARD 1: Identificação -->
+        <div class="card grid-col-12">
+            <div class="card-header">Identificação do Veículo / Drone</div>
+            <div class="info-grid">
+                <div class="field-group">
+                    <label for="veh-name">Nome / Modelo</label>
+                    <input type="text" id="veh-name" name="name" placeholder="Ex: Grav-Flyer de Assalto / Drone Olho de Águia">
+                </div>
+                <div class="field-group">
+                    <label for="veh-category">Categoria</label>
+                    <select id="veh-category" name="category">
+                        <option value="Terrestre">Veículo Terrestre (Rodas / Esteiras)</option>
+                        <option value="Hover" selected>Flotador (Grav-Hover)</option>
+                        <option value="Aéreo">Aeronave / Atmosférico</option>
+                        <option value="Aquático">Aquático / Subaquático</option>
+                        <option value="DroneRecon">Drone de Reconhecimento</option>
+                        <option value="DroneGuerra">Drone de Guerra / Ataque</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="veh-operator">Operador / Piloto</label>
+                    <input type="text" id="veh-operator" name="operator" placeholder="Nome do Piloto ou Operador">
+                </div>
+                <div class="field-group">
+                    <label for="veh-tl">Nível Tecnológico (TL)</label>
+                    <input type="text" id="veh-tl" name="tech_level" placeholder="TL4">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: Estatísticas Globais -->
+        <div class="card grid-col-6">
+            <div class="card-header">Desempenho & Integridade</div>
+            <div class="vitals-grid">
+                <div class="vital-card accent-hp">
+                    <div class="vital-label">Pontos de Vida (HP)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="hp-current" name="hp_current" class="vital-input" value="15">
+                        <span style="color:var(--text-muted);">/</span>
+                        <input type="number" id="hp-max" name="hp_max" class="vital-input" value="15">
+                    </div>
+                </div>
+                <div class="vital-card accent-ac">
+                    <div class="vital-label">Classe de Armadura (CA)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="ac-val" name="ac" class="vital-input" value="13">
+                    </div>
+                </div>
+                <div class="vital-card accent-bab">
+                    <div class="vital-label">Velocidade Máx.</div>
+                    <div class="vital-val-container">
+                        <input type="text" id="speed-val" name="speed" style="width:80px; text-align:center;" value="120 km/h">
+                    </div>
+                </div>
+                <div class="vital-card accent-strain">
+                    <div class="vital-label">Alcance de Sinal</div>
+                    <div class="vital-val-container">
+                        <input type="text" id="signal-range" name="signal_range" style="width:80px; text-align:center;" value="5 km">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: Capacidade & Tripulação -->
+        <div class="card grid-col-6">
+            <div class="card-header">Capacidade & Tripulação</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                <div class="field-group">
+                    <label for="veh-crew">Tripulação / Passageiros</label>
+                    <input type="text" id="veh-crew" name="crew" placeholder="1 Piloto + 3 Passageiros">
+                </div>
+                <div class="field-group">
+                    <label for="veh-cargo">Capacidade de Carga</label>
+                    <input type="text" id="veh-cargo" name="cargo" placeholder="250 kg">
+                </div>
+                <div class="field-group">
+                    <label for="veh-power">Combustível / Bateria</label>
+                    <input type="text" id="veh-power" name="power_source" placeholder="Célula de Fusão (500km)">
+                </div>
+                <div class="field-group">
+                    <label for="veh-armor-type">Tipo de Armadura</label>
+                    <input type="text" id="veh-armor-type" name="armor_type" placeholder="Blindagem Composta">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: Armamento do Veículo/Drone -->
+        <div class="card grid-col-12">
+            <div class="card-header">
+                <span>Armamento Montado</span>
+                <button type="button" class="btn" onclick="addWeaponRow()">+ Arma</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Arma</th>
+                            <th>Dano</th>
+                            <th>Alcance</th>
+                            <th>Munição / Carga</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weapons-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 5: Acessórios & Modificações -->
+        <div class="card grid-col-12">
+            <div class="card-header">
+                <span>Acessórios, Sensores & Modificações</span>
+                <button type="button" class="btn" onclick="addFittingRow()">+ Modificação</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Acessório / Modificação</th>
+                            <th style="width: 50%;">Efeito / Função</th>
+                            <th style="width: 10%;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fittings-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 6: Anotações Gerais -->
+        <div class="card grid-col-12">
+            <div class="card-header">Anotações Gerais</div>
+            <div class="field-group">
+                <textarea id="veh-notes" name="notes" rows="4" placeholder="Histórico do veículo, avarias conhecidas, sensores acoplados..."></textarea>
+            </div>
+        </div>
+
+    </form>
+
+    <!-- Modal Popup de Rolagem -->
+    <div class="modal-overlay" id="dice-modal-overlay" onclick="if(event.target===this) closeDiceModal();">
+        <div class="modal-content">
+            <h2 id="dice-result-text" class="dice-result-number" style="font-size:1.8rem; margin-bottom:10px;">Resultado</h2>
+            <div class="dice-breakdown" id="dice-details" style="font-size:1rem; padding:12px;">Detalhes</div>
+            <button type="button" class="btn btn-primary" style="margin-top:16px; width:100%; justify-content:center;" onclick="closeDiceModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scripts da Ficha -->
+    <script src="../../js/swn_veiculo.js"></script>
+</body>
+</html>

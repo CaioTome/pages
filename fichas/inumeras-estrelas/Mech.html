@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars Without Number - Ficha de Mech</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Compartilhado SWN -->
+    <link rel="stylesheet" href="../../css/swn.css">
+</head>
+<body class="theme-mech">
+
+    <div class="header-bar">
+        <div>
+            <h1 class="brand-title">Mech de Combate</h1>
+            <div class="brand-subtitle">Stars Without Number: Revised Edition • Registro de Unidade Mech</div>
+        </div>
+        <div class="toolbar">
+            <button class="btn btn-primary" type="button" onclick="saveSheet()">Salvar</button>
+            <button class="btn" type="button" onclick="exportJSON()">Exportar JSON</button>
+            <button class="btn" type="button" onclick="document.getElementById('import-file').click()">Importar JSON</button>
+            <input type="file" id="import-file" style="display:none" onchange="importJSON(event)" accept=".json">
+            <button class="btn" type="button" onclick="toggleTheme()">Tema</button>
+            <button class="btn" type="button" onclick="window.print()">Imprimir</button>
+            <button class="btn btn-danger" type="button" onclick="resetSheet()">Limpar</button>
+        </div>
+    </div>
+
+    <form id="mech-sheet" class="sheet-container" onkeydown="if(event.key==='Enter' && event.target.tagName !== 'TEXTAREA') event.preventDefault();">
+
+        <!-- CARD 1: Identificação do Mech -->
+        <div class="card grid-col-12">
+            <div class="card-header">Especificações do Chassis</div>
+            <div class="info-grid">
+                <div class="field-group">
+                    <label for="mech-name">Nome da Unidade / Designação</label>
+                    <input type="text" id="mech-name" name="name" placeholder="Ex: Titan Vanguard Mk-III">
+                </div>
+                <div class="field-group">
+                    <label for="mech-chassis">Classe de Chassis</label>
+                    <select id="mech-chassis" name="chassis" onchange="calculateSheet()">
+                        <option value="Suit">Traje Armado (Power Armor / Suit)</option>
+                        <option value="Light" selected>Mech Ligeiro (Light Mech)</option>
+                        <option value="Medium">Mech Médio (Medium Mech)</option>
+                        <option value="Heavy">Mech Pesado (Heavy Mech)</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="mech-pilot">Piloto Designado</label>
+                    <input type="text" id="mech-pilot" name="pilot" placeholder="Nome do Piloto">
+                </div>
+                <div class="field-group">
+                    <label for="mech-movement">Tipo de Locomoção</label>
+                    <input type="text" id="mech-movement" name="movement_type" placeholder="Ex: Bípede / Propulsor de Voo">
+                </div>
+                <div class="field-group">
+                    <label for="mech-tl">Nível Tecnológico (TL)</label>
+                    <input type="text" id="mech-tl" name="tech_level" placeholder="TL4 / TL5 Pretech">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: Estrutura & Vigor do Mech -->
+        <div class="card grid-col-6">
+            <div class="card-header">Estrutura & Blindagem</div>
+            <div class="vitals-grid">
+                <div class="vital-card accent-hp">
+                    <div class="vital-label">Pontos de Estrutura (HP)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="hp-current" name="hp_current" class="vital-input" value="30">
+                        <span style="color:var(--text-muted);">/</span>
+                        <input type="number" id="hp-max" name="hp_max" class="vital-input" value="30">
+                    </div>
+                </div>
+                <div class="vital-card accent-ac">
+                    <div class="vital-label">Classe de Armadura (CA)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="ac-val" name="ac" class="vital-input" value="16">
+                    </div>
+                </div>
+                <div class="vital-card accent-bab">
+                    <div class="vital-label">Velocidade (m/rodada)</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="speed-val" name="speed" class="vital-input" value="20">
+                    </div>
+                </div>
+                <div class="vital-card accent-strain">
+                    <div class="vital-label">Estresse / Sobrecarga</div>
+                    <div class="vital-val-container">
+                        <input type="number" id="strain-val" name="strain" class="vital-input" value="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: Orçamento de Hardpoints e Energia -->
+        <div class="card grid-col-6">
+            <div class="card-header">Capacidade de Montagem & Energia</div>
+
+            <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                    <span>Pontos de Montagem (Hardpoints)</span>
+                    <span><strong id="hp-used">0</strong> / <strong id="hp-max-display">6</strong></span>
+                </div>
+                <div class="hp-progress-container">
+                    <div id="hp-bar" class="hp-progress-bar" style="width: 0%; background: var(--accent-amber);"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                    <span>Reserva de Energia (Power Pool)</span>
+                    <span><strong id="power-used">0</strong> / <strong id="power-max-display">12</strong></span>
+                </div>
+                <div class="hp-progress-container">
+                    <div id="power-bar" class="hp-progress-bar" style="width: 0%; background: var(--accent-purple);"></div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:14px;">
+                <div class="field-group">
+                    <label for="hp-max-input">Hardpoints Máximos</label>
+                    <input type="number" id="hp-max-input" name="hardpoints_max" value="6" onchange="calculateSheet()">
+                </div>
+                <div class="field-group">
+                    <label for="power-max-input">Energia Máxima</label>
+                    <input type="number" id="power-max-input" name="power_max" value="12" onchange="calculateSheet()">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: Armamento do Mech -->
+        <div class="card grid-col-12">
+            <div class="card-header">
+                <span>Armamento Pesado de Mech</span>
+                <button type="button" class="btn" onclick="addWeaponRow()">+ Arma de Mech</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Arma</th>
+                            <th>Dano</th>
+                            <th>Alcance</th>
+                            <th>Hardpoints</th>
+                            <th>Energia</th>
+                            <th>Munição / Recarga</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weapons-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 5: Sistemas Internos & Módulos -->
+        <div class="card grid-col-12">
+            <div class="card-header">
+                <span>Sistemas Internos, Escudos & Módulos</span>
+                <button type="button" class="btn" onclick="addSystemRow()">+ Sistema</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Sistema</th>
+                            <th style="width: 15%;">Hardpoints</th>
+                            <th style="width: 15%;">Energia</th>
+                            <th style="width: 25%;">Efeito / Benefício</th>
+                            <th style="width: 10%;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="systems-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 6: Anotações & Registro do Piloto -->
+        <div class="card grid-col-12">
+            <div class="card-header">Registro de Manutenção & Histórico de Combate</div>
+            <div class="field-group">
+                <textarea id="mech-notes" name="notes" rows="4" placeholder="Danos críticos sofridos, substituições de peças, munições especiais carregadas..."></textarea>
+            </div>
+        </div>
+
+    </form>
+
+    <!-- Modal Popup de Rolagem -->
+    <div class="modal-overlay" id="dice-modal-overlay" onclick="if(event.target===this) closeDiceModal();">
+        <div class="modal-content">
+            <h2 id="dice-result-text" class="dice-result-number" style="font-size:1.8rem; margin-bottom:10px;">Resultado</h2>
+            <div class="dice-breakdown" id="dice-details" style="font-size:1rem; padding:12px;">Detalhes</div>
+            <button type="button" class="btn btn-primary" style="margin-top:16px; width:100%; justify-content:center;" onclick="closeDiceModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scripts da Ficha -->
+    <script src="../../js/swn_mech.js"></script>
+</body>
+</html>
