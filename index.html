@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caio Tomé — Portal de Fichas & RPG Hub</title>
-    <meta name="description" content="Central de fichas interativas, calculadoras e manuais para RPG de Mesa: Stars Without Number (Inúmeras Estrelas) e MIZUHOME (水の家).">
+    <title>Portal de Fichas RPG</title>
+    <meta name="description" content="Central de fichas interativas para RPG de Mesa: Stars Without Number (Inúmeras Estrelas) e MIZUHOME (水の家).">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,9 +29,6 @@
             --accent-mizu: #f43f5e;
             --accent-mizu-glow: rgba(244, 63, 94, 0.25);
             --accent-mizu-gradient: linear-gradient(135deg, #be123c 0%, #fb7185 100%);
-
-            --accent-gold: #fbbf24;
-            --accent-purple: #a855f7;
 
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -478,12 +475,6 @@
             border: 1px solid rgba(244, 63, 94, 0.25);
         }
 
-        .card-badge.pdf {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-gold);
-            border: 1px solid rgba(251, 191, 36, 0.25);
-        }
-
         .card-body {
             margin-bottom: 1.5rem;
         }
@@ -632,7 +623,7 @@
             border-top: 1px solid var(--border-glass);
             background: rgba(8, 10, 18, 0.8);
             backdrop-filter: blur(12px);
-            padding: 2.5rem 1.5rem;
+            padding: 2.2rem 1.5rem;
             text-align: center;
         }
 
@@ -642,34 +633,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .footer-link:hover {
-            color: var(--accent-swn);
+            gap: 0.8rem;
         }
 
         .footer-copy {
             color: #64748b;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
         }
 
         /* Responsive Media Queries */
@@ -709,10 +678,10 @@
         <header class="header">
             <div class="badge-pill">
                 <span class="badge-dot"></span>
-                <span>GitHub Pages Hub • Online</span>
+                <span>Fichas de RPG • Online</span>
             </div>
-            <h1 class="main-title">Caio Tomé — RPG Hub</h1>
-            <p class="subtitle">Portal unificado de fichas interativas, geradores e recursos digitais para Stars Without Number e MIZUHOME RPG.</p>
+            <h1 class="main-title">Portal de Fichas RPG</h1>
+            <p class="subtitle">Central interativa de fichas digitais para Stars Without Number e MIZUHOME RPG.</p>
 
             <!-- Search and Filter Controls -->
             <div class="controls-bar">
@@ -730,9 +699,6 @@
                     <button type="button" class="filter-btn" data-filter="mizuhome">
                         <i class="fa-solid fa-torii-gate"></i> MIZUHOME
                     </button>
-                    <button type="button" class="filter-btn" data-filter="pdf">
-                        <i class="fa-solid fa-file-pdf"></i> Livros & Manuais
-                    </button>
                 </div>
             </div>
         </header>
@@ -748,10 +714,10 @@
                     </div>
                     <div>
                         <h2 class="section-title swn-font">INÚMERAS ESTRELAS</h2>
-                        <p class="section-desc">Fichas completas para o universo de Stars Without Number • Setor Mandato</p>
+                        <p class="section-desc">Fichas para o universo de Stars Without Number • Setor Mandato</p>
                     </div>
                 </div>
-                <div class="section-count">4 Fichas Disponíveis</div>
+                <div class="section-count">4 Fichas</div>
             </div>
 
             <div class="cards-grid">
@@ -885,7 +851,7 @@
                         <p class="section-desc">Registro Espiritual dos Descendentes Divinos • Sistema de RPG Mitológico</p>
                     </div>
                 </div>
-                <div class="section-count">3 Recursos Disponíveis</div>
+                <div class="section-count">1 Ficha</div>
             </div>
 
             <div class="cards-grid">
@@ -917,64 +883,6 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Livro do Jogador PDF -->
-                <div class="sheet-card mizu-theme" data-system="pdf mizuhome" data-keywords="mizuhome livro manual regras jogador sistema pdf guia criacao">
-                    <div>
-                        <div class="card-top">
-                            <div class="card-icon-box">
-                                <i class="fa-solid fa-book-journal-whills"></i>
-                            </div>
-                            <span class="card-badge pdf">Manual em PDF</span>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">Livro do Jogador</h3>
-                            <p class="card-desc">Manual completo com as regras oficiais de MIZUHOME, criação de personagens e ambientação.</p>
-                            <div class="card-tags">
-                                <span class="tag">Documento Oficial</span>
-                                <span class="tag">Regras do Sistema</span>
-                                <span class="tag">PDF</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <a href="./dev/MIZUHOME%20—%20Livro%20do%20Jogador.pdf" target="_blank" class="btn-launch">
-                            <i class="fa-solid fa-file-arrow-down"></i> Abrir Manual
-                        </a>
-                        <button type="button" class="btn-copy" onclick="copyLink('dev/MIZUHOME%20—%20Livro%20do%20Jogador.pdf', 'Livro do Jogador MIZUHOME')" title="Copiar Link Direto">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Livro de Poderes PDF -->
-                <div class="sheet-card mizu-theme" data-system="pdf mizuhome" data-keywords="mizuhome poderes dons kami magia feiticos tecnicas compendio pdf">
-                    <div>
-                        <div class="card-top">
-                            <div class="card-icon-box">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            </div>
-                            <span class="card-badge pdf">Compêndio PDF</span>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">Compêndio de Poderes</h3>
-                            <p class="card-desc">Lista descritiva detalhada de todos os poderes divinos, custos espirituais e efeitos para Semikamis.</p>
-                            <div class="card-tags">
-                                <span class="tag">Habilidades de Kami</span>
-                                <span class="tag">Custos & Graus</span>
-                                <span class="tag">PDF</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <a href="./dev/MIZUHOME%20—%20Poderes.pdf" target="_blank" class="btn-launch">
-                            <i class="fa-solid fa-file-arrow-down"></i> Abrir Compêndio
-                        </a>
-                        <button type="button" class="btn-copy" onclick="copyLink('dev/MIZUHOME%20—%20Poderes.pdf', 'Compêndio de Poderes MIZUHOME')" title="Copiar Link Direto">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
             </div>
         </section>
     </div>
@@ -988,17 +896,8 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-links">
-                <a href="https://github.com/caiotome" target="_blank" class="footer-link">
-                    <i class="fa-brands fa-github"></i> GitHub @caiotome
-                </a>
-                <span style="color: var(--border-glass);">•</span>
-                <a href="https://caiotome.github.io/pages/" class="footer-link">
-                    <i class="fa-solid fa-globe"></i> caiotome.github.io/pages
-                </a>
-            </div>
             <p class="footer-copy">
-                Construído com carinho para mesas de RPG • Stars Without Number & MIZUHOME RPG
+                Fichas Digitais para Mesas de RPG • Stars Without Number & MIZUHOME RPG
             </p>
         </div>
     </footer>
