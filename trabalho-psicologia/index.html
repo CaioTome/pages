@@ -536,24 +536,7 @@
             50%       { transform: translateY(-10px); }
         }
 
-        #pet-placeholder-visual {
-            position: relative;
-            z-index: 1;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(18, 26, 46, 0.9) 100%);
-            border: 2px dashed rgba(56, 189, 248, 0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            animation: flutuarMascote 3.6s ease-in-out infinite;
-        }
 
-        #pet-placeholder-visual .icone-placeholder { font-size: 3.5rem; line-height: 1; }
-        #pet-placeholder-visual small { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 
         .pet-id {
             display: flex;
@@ -937,10 +920,6 @@
             <!-- Mascote grande centralizado -->
             <div class="mascote-hero-box">
                 <img id="pet-imagem" src="" alt="Mascote do perfil" width="280" height="280" hidden>
-                <div id="pet-placeholder-visual" hidden>
-                    <span id="icone-mascote-placeholder" class="icone-placeholder">🌟</span>
-                    <small>Mascote</small>
-                </div>
             </div>
 
             <div class="pet-id">
@@ -1384,8 +1363,7 @@
         const resultadoFaixaTitulo    = document.getElementById("resultado-faixa-titulo");
         const resultadoFaixaDescricao = document.getElementById("resultado-faixa-descricao");
         const petImagem               = document.getElementById("pet-imagem");
-        const petPlaceholderVisual    = document.getElementById("pet-placeholder-visual");
-        const iconeMascotePlaceholder = document.getElementById("icone-mascote-placeholder");
+
         const petNome                 = document.getElementById("pet-nome");
         const petDescricao            = document.getElementById("pet-descricao");
 
@@ -1499,25 +1477,12 @@
             resultadoFaixaDescricao.textContent = faixa.descricao;
             petNome.textContent                 = faixa.pet.nome;
             petDescricao.textContent            = faixa.pet.descricao;
-            iconeMascotePlaceholder.textContent = faixa.icone || "✨";
-
             if (faixa.pet.imagem) {
                 petImagem.src = faixa.pet.imagem;
                 petImagem.alt = faixa.pet.nome;
                 petImagem.hidden = false;
-                petPlaceholderVisual.hidden = true;
-
-                petImagem.onerror = () => {
-                    petImagem.hidden = true;
-                    petPlaceholderVisual.hidden = false;
-                };
-                petImagem.onload = () => {
-                    petImagem.hidden = false;
-                    petPlaceholderVisual.hidden = true;
-                };
             } else {
                 petImagem.hidden = true;
-                petPlaceholderVisual.hidden = false;
             }
 
             mudarTela(telaResultado);
