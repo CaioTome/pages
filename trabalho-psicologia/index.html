@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário de Autoavaliação Reflexiva | Lígia Charão de Souza</title>
+    <meta name="description" content="Questionário reflexivo sobre autoimagem, narcisismo e conexões autênticas. Desenvolvido por Lígia Charão de Souza com base no Mito de Narciso.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* DESIGN TOKENS & RESET                                        */
+        /* ============================================================ */
+        :root {
+            --bg-deep: #070a12;
+            --bg-surface: #0e1424;
+            --bg-card: rgba(18, 26, 46, 0.78);
+            --bg-card-hover: rgba(28, 39, 68, 0.88);
+            --bg-card-checked: rgba(56, 189, 248, 0.12);
+
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.18);
+            --border-accent: #38bdf8;
+
+            --accent-cyan: #38bdf8;
+            --accent-teal: #2dd4bf;
+            --accent-indigo: #818cf8;
+            --accent-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 55%, #2dd4bf 100%);
+            --accent-gradient-hover: linear-gradient(135deg, #0369a1 0%, #0284c7 55%, #0d9488 100%);
+
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --radius-full: 9999px;
+
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 25px -5px rgba(56, 189, 248, 0.25);
+
+            --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            min-height: 100dvh;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 100% 50%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 0% 90%, rgba(45, 212, 191, 0.08) 0%, transparent 40%),
+                var(--bg-deep);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ============================================================ */
+        /* SPA: TELAS (hide/show)                                       */
+        /* ============================================================ */
+        .tela {
+            display: none;
+            min-height: 100dvh;
+            width: 100%;
+        }
+        .tela.ativa {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================================ */
+        /* TELA 1: INÍCIO — Simples, sem toldo, botão grande centralizado */
+        /* ============================================================ */
+        #tela-inicio {
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 32px 20px;
+        }
+
+        .inicio-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            gap: 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .inicio-titulo {
+            font-size: clamp(1.5rem, 6vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            max-width: 460px;
+        }
+
+        .inicio-subtitulo {
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            color: var(--text-muted);
+            margin-bottom: 44px;
+            max-width: 340px;
+        }
+
+        .btn-iniciar-grande {
+            position: relative;
+            min-width: 220px;
+            max-width: 340px;
+            width: 90%;
+            min-height: 64px;
+            padding: 18px 36px;
+            font-family: var(--font-family);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: #ffffff;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            box-shadow:
+                0 10px 30px -4px rgba(2, 132, 199, 0.5),
+                0 0 0 0 rgba(56, 189, 248, 0);
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            animation: pulsarBotao 3s ease-in-out infinite;
+        }
+
+        @keyframes pulsarBotao {
+            0%, 100% { box-shadow: 0 10px 30px -4px rgba(2, 132, 199, 0.5), 0 0 0 0 rgba(56, 189, 248, 0.3); }
+            50%       { box-shadow: 0 14px 40px -4px rgba(56, 189, 248, 0.65), 0 0 0 12px rgba(56, 189, 248, 0); }
+        }
+
+        .btn-iniciar-grande:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 18px 40px -4px rgba(56, 189, 248, 0.6);
+            animation: none;
+        }
+
+        .btn-iniciar-grande:active {
+            transform: translateY(1px) scale(0.99);
+        }
+
+        .btn-iniciar-grande .icone-play {
+            font-size: 1.2rem;
+        }
+
+        /* Link "Mais Informações" — absolutamente discreto no rodapé da tela */
+        .inicio-link-info {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-family: var(--font-family);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .inicio-link-info:hover {
+            color: var(--text-muted);
+        }
+
+        /* ============================================================ */
+        /* TELA 2: QUESTIONÁRIO                                         */
+        /* ============================================================ */
+        #tela-questionario {
+            flex-direction: column;
+        }
+
+        .quiz-wrapper {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header {
+            text-align: center;
+            padding: 16px 0 20px;
+        }
+
+        .quiz-header h1 {
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+
+        .quiz-header .autoria {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .quiz-header .autoria strong {
+            color: var(--accent-teal);
+        }
+
+        /* Card de questão */
+        .card-vidro {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 24px 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* Barra de Progresso */
+        .cabecalho-questao {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .progresso-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #texto-progresso {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        #porcentagem-progresso {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .trilha-progresso {
+            width: 100%;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .preenchimento-progresso {
+            height: 100%;
+            width: 5%;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-full);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #barra-progresso { display: none; }
+
+        fieldset { border: none; padding: 0; margin: 0; }
+
+        #pergunta-titulo {
+            font-size: clamp(1.05rem, 3.8vw, 1.25rem);
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.45;
+            margin-bottom: 22px;
+            display: block;
+        }
+
+        #opcoes-conteiner {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .opcao-item {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid var(--border-glass);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .opcao-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .opcao-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .opcao-badge {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-right: 14px;
+            transition: var(--transition-smooth);
+        }
+
+        .opcao-texto {
+            font-size: 0.93rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+            flex: 1;
+            padding-top: 3px;
+        }
+
+        .opcao-item.selecionada {
+            background: var(--bg-card-checked);
+            border-color: var(--border-accent);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .opcao-item.selecionada .opcao-badge {
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: #04101e;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .opcao-item.selecionada .opcao-texto {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        /* Botões de Navegação */
+        #navegacao-questoes {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-acao {
+            min-height: 48px;
+            padding: 12px 24px;
+            font-family: var(--font-family);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-secundario {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
+            color: var(--text-sub);
+        }
+
+        .btn-secundario:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-main);
+        }
+
+        .btn-secundario:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .btn-primario {
+            background: var(--accent-gradient);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+            flex: 1;
+        }
+
+        .btn-primario:hover:not(:disabled) {
+            background: var(--accent-gradient-hover);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+        }
+
+        .btn-primario:disabled { opacity: 0.45; cursor: not-allowed; filter: grayscale(40%); }
+
+        .btn-finalizar-estilo {
+            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #2dd4bf 100%);
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+            color: #ffffff;
+            flex: 1;
+        }
+
+        .btn-finalizar-estilo:hover:not(:disabled) {
+            box-shadow: 0 6px 25px rgba(45, 212, 191, 0.55);
+        }
+
+        /* ============================================================ */
+        /* TELA 3: RESULTADO — Mascote full-screen + seta + detalhes    */
+        /* ============================================================ */
+        #tela-resultado {
+            flex-direction: column;
+        }
+
+        /* HERO: ocupa 100dvh */
+        #hero-resultado {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            padding: 36px 20px 28px;
+            position: relative;
+        }
+
+        .hero-topo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .badge-pontuacao {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.02em;
+        }
+
+        #resultado-faixa-titulo {
+            font-size: clamp(1.35rem, 4.5vw, 2rem);
+            font-weight: 800;
+            line-height: 1.25;
+            color: #ffffff;
+            max-width: 520px;
+        }
+
+        /* Mascote: grande, centralizado */
+        .mascote-hero-box {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 360px;
+            margin: 16px auto;
+        }
+
+        .mascote-hero-box::after {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(45, 212, 191, 0.1) 40%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #pet-imagem {
+            position: relative;
+            z-index: 1;
+            max-width: 280px;
+            max-height: 280px;
+            width: 70vw;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.55));
+            animation: flutuarMascote 3.6s ease-in-out infinite;
+        }
+
+        @keyframes flutuarMascote {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+
+        #pet-placeholder-visual {
+            position: relative;
+            z-index: 1;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(18, 26, 46, 0.9) 100%);
+            border: 2px dashed rgba(56, 189, 248, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            animation: flutuarMascote 3.6s ease-in-out infinite;
+        }
+
+        #pet-placeholder-visual .icone-placeholder { font-size: 3.5rem; line-height: 1; }
+        #pet-placeholder-visual small { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .pet-id {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .pet-rotulo {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        #pet-nome {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-teal);
+        }
+
+        /* Seta discreta branca */
+        .area-seta {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding-top: 8px;
+        }
+
+        #btn-descer-resultado {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: var(--font-family);
+            cursor: pointer;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            transition: var(--transition-smooth);
+            padding: 8px;
+            animation: pulsarSeta 2.4s ease-in-out infinite;
+        }
+
+        #btn-descer-resultado:hover {
+            color: rgba(255, 255, 255, 0.75);
+            animation: none;
+        }
+
+        @keyframes pulsarSeta {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50%       { transform: translateY(6px); opacity: 0.75; }
+        }
+
+        .icone-seta {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .texto-seta {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* Seção de detalhes (abaixo do hero) */
+        #detalhes-resultado {
+            scroll-margin-top: 20px;
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 16px 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .bloco-analise {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 18px 16px;
+        }
+
+        .bloco-analise h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        #resultado-faixa-descricao {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            line-height: 1.65;
+        }
+
+        #pet-descricao {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-style: italic;
+        }
+
+        /* Gabarito Completo */
+        #gabarito-completo {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #gabarito-completo h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        details.item-gabarito {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        details.item-gabarito[open] {
+            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.04);
+        }
+
+        details.item-gabarito summary {
+            padding: 14px 16px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        details.item-gabarito summary::-webkit-details-marker { display: none; }
+        details.item-gabarito summary::after { content: '+'; font-size: 1.2rem; color: var(--accent-cyan); }
+        details.item-gabarito[open] summary::after { content: '−'; }
+
+        details.item-gabarito p {
+            padding: 0 16px 14px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .acoes-finais {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        /* ============================================================ */
+        /* TELA 4: MAIS INFORMAÇÕES                                     */
+        /* ============================================================ */
+        #tela-informacoes {
+            flex-direction: column;
+        }
+
+        .info-wrapper {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-header {
+            text-align: center;
+            padding: 20px 0 24px;
+        }
+
+        .tag-tema {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            margin-bottom: 12px;
+        }
+
+        .info-header h1 {
+            font-size: clamp(1.45rem, 5vw, 1.95rem);
+            font-weight: 800;
+            line-height: 1.25;
+            background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .autoria-credito {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .autoria-credito strong { color: var(--accent-teal); font-weight: 600; }
+
+        .info-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 28px 22px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .info-card h2 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            line-height: 1.3;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 6px;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            line-height: 1.65;
+        }
+
+        .lista-pontuacao {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 4px 0;
+        }
+
+        .lista-pontuacao li {
+            font-size: 0.9rem;
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--accent-cyan);
+            color: var(--text-sub);
+        }
+
+        .lista-pontuacao li strong {
+            color: var(--text-main);
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+
+        .acoes-informacoes {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        /* Rodapé discreto */
+        .rodape-discreto {
+            text-align: center;
+            padding: 20px 12px 8px;
+        }
+
+        .rodape-discreto small {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        /* ============================================================ */
+        /* RESPONSIVIDADE                                               */
+        /* ============================================================ */
+        @media (min-width: 640px) {
+            .card-vidro, .info-card { padding: 32px 28px; }
+            .acoes-informacoes, .acoes-finais { flex-direction: row; }
+            .acoes-informacoes button, .acoes-finais button { flex: 1; }
+            #pet-imagem { max-width: 320px; max-height: 320px; }
+            #pet-placeholder-visual { width: 220px; height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================= -->
+    <!-- TELA 1: INÍCIO                                          -->
+    <!-- ======================================================= -->
+    <section id="tela-inicio" class="tela ativa" aria-label="Tela inicial">
+        <div class="inicio-inner">
+            <h1 class="inicio-titulo">Questionário de<br>Autoavaliação Reflexiva</h1>
+            <p class="inicio-subtitulo">Psicologia da Imagem &amp; Mito de Narciso</p>
+
+            <button id="btn-iniciar" class="btn-iniciar-grande" type="button">
+                <span class="icone-play">▶</span>
+                Iniciar Questionário
+            </button>
+        </div>
+
+        <button id="btn-mais-informacoes-inicio" class="inicio-link-info" type="button">
+            ℹ️ Mais Informações
+        </button>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TELA 2: QUESTIONÁRIO                                    -->
+    <!-- ======================================================= -->
+    <section id="tela-questionario" class="tela" aria-label="Questionário">
+        <div class="quiz-wrapper">
+            <header class="quiz-header">
+                <h1>Questionário de Autoavaliação Reflexiva</h1>
+                <p class="autoria">Desenvolvido por: <strong>Lígia Charão de Souza</strong></p>
+            </header>
+
+            <div class="card-vidro">
+                <!-- Barra de Progresso -->
+                <div class="cabecalho-questao">
+                    <div class="progresso-meta">
+                        <span id="texto-progresso">Questão 1 de 20</span>
+                        <span id="porcentagem-progresso">5%</span>
+                    </div>
+                    <div class="trilha-progresso" aria-hidden="true">
+                        <div id="barra-progresso-visual" class="preenchimento-progresso"></div>
+                    </div>
+                    <progress id="barra-progresso" value="1" max="20"></progress>
+                </div>
+
+                <!-- Formulário -->
+                <form id="form-questionario" onsubmit="return false;">
+                    <fieldset>
+                        <legend id="pergunta-titulo">Carregando pergunta...</legend>
+                        <div id="opcoes-conteiner">
+                            <!-- Injetado via Javascript -->
+                        </div>
+                    </fieldset>
+
+                    <nav id="navegacao-questoes">
+                        <button id="btn-anterior" class="btn-acao btn-secundario" type="button">Voltar</button>
+                        <button id="btn-proximo" class="btn-acao btn-primario" type="button">Próxima ➔</button>
+                    </nav>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TELA 3: RESULTADO (Mascote full-screen + detalhes)      -->
+    <!-- ======================================================= -->
+    <section id="tela-resultado" class="tela" aria-label="Resultado">
+
+        <!-- HERO: ocupa 100dvh -->
+        <div id="hero-resultado">
+            <div class="hero-topo">
+                <div class="badge-pontuacao">
+                    Sua Pontuação: <span id="pontuacao-numero">0</span> / 100 pontos
+                </div>
+                <h2 id="resultado-faixa-titulo">Título da Faixa</h2>
+            </div>
+
+            <!-- Mascote grande centralizado -->
+            <div class="mascote-hero-box">
+                <img id="pet-imagem" src="" alt="Mascote do perfil" width="280" height="280" hidden>
+                <div id="pet-placeholder-visual" hidden>
+                    <span id="icone-mascote-placeholder" class="icone-placeholder">🌟</span>
+                    <small>Mascote</small>
+                </div>
+            </div>
+
+            <div class="pet-id">
+                <span class="pet-rotulo">Mascote Representativo</span>
+                <h3 id="pet-nome">Nome do Mascote</h3>
+            </div>
+
+            <!-- Seta branca discreta -->
+            <div class="area-seta">
+                <button id="btn-descer-resultado" type="button" aria-label="Rolar para ver reflexão completa">
+                    <span class="icone-seta">↓</span>
+                    <span class="texto-seta">Ver reflexão</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Detalhes do resultado (abaixo do hero) -->
+        <div id="detalhes-resultado">
+            <div class="bloco-analise">
+                <h4>Análise Psicológica do seu Perfil</h4>
+                <p id="resultado-faixa-descricao">Descrição detalhada da faixa de pontuação.</p>
+            </div>
+
+            <div class="bloco-analise">
+                <h4>Sobre o seu Mascote</h4>
+                <p id="pet-descricao">Descrição da personalidade e significado do bichinho.</p>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-glass);">
+
+            <section id="gabarito-completo">
+                <h3>Gabarito Completo de Interpretação</h3>
+
+                <details class="item-gabarito">
+                    <summary><strong>20 a 35 pontos: Conexão Autêntica / Baixo Risco</strong></summary>
+                    <p>O participante tem um ego estruturado de forma saudável. Consegue olhar para dentro sem medo, aceita imperfeições e constrói relacionamentos reais baseados na empatia e na vulnerabilidade. Não depende do "reflexo no lago" para existir.</p>
+                </details>
+
+                <details class="item-gabarito">
+                    <summary><strong>36 a 55 pontos: Vaidade / Oscilação Moderada</strong></summary>
+                    <p>Exibe traços comuns da sociedade contemporânea: busca de validação pontual e preocupação com a imagem. O risco narcisista é baixo, mas há momentos de desatenção às necessidades do outro devido ao excesso de foco no próprio umbigo.</p>
+                </details>
+
+                <details class="item-gabarito">
+                    <summary><strong>56 a 75 pontos: Tendência Narcisista Elevada / Alerta de Isolamento</strong></summary>
+                    <p>A dependência do olhar externo ("curtidas", elogios, status) é alta. Há dificuldade em aceitar críticas e em se conectar com a dor alheia. A imagem projetada está começando a sufocar o "Eu Real", gerando ansiedade e relacionamentos mais superficiais.</p>
+                </details>
+
+                <details class="item-gabarito">
+                    <summary><strong>76 a 100 pontos: Alto Risco de Adoecimento Narcisista / Morte da Alteridade</strong></summary>
+                    <p>Alinhamento forte com a tragédia do mito. O participante vive em função de uma fachada grandiosa para proteger um interior vulnerável e não trabalhado. Há uma recusa em "conhecer a si mesmo" (autocriticidade), além de uma tendência a instrumentalizar as pessoas ao redor. Alto risco de isolamento, burnout emocional e colapso afetivo.</p>
+                </details>
+            </section>
+
+            <div class="acoes-finais">
+                <button id="btn-reiniciar" class="btn-acao btn-secundario" type="button">Refazer Questionário</button>
+                <button id="btn-info-resultado" class="btn-acao btn-primario" type="button">Mais Informações</button>
+            </div>
+
+            <footer class="rodape-discreto">
+                <small>&copy; Questionário de Autoavaliação Reflexiva — Lígia Charão de Souza.<br>Todos os direitos reservados.</small>
+            </footer>
+        </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TELA 4: MAIS INFORMAÇÕES                                -->
+    <!-- ======================================================= -->
+    <section id="tela-informacoes" class="tela" aria-label="Mais informações">
+        <div class="info-wrapper">
+            <header class="info-header">
+                <span class="tag-tema">Psicologia da Imagem &amp; Mito de Narciso</span>
+                <h1>Sobre o Questionário</h1>
+                <p class="autoria-credito">Desenvolvido por: <strong>Lígia Charão de Souza</strong></p>
+            </header>
+
+            <article class="info-card">
+                <h2>Fundamentação Teórica</h2>
+
+                <p>
+                    Este questionário reflexivo é composto por 20 questões que exploram nossa relação
+                    com a autoimagem, o olhar do outro, a busca por validação e a capacidade de conexão autêntica.
+                    Não há respostas certas ou erradas; o objetivo é proporcionar um momento de autoconhecimento e reflexão honesta.
+                </p>
+
+                <h3>O Mito de Narciso na Sociedade Contemporânea</h3>
+                <p>
+                    Na mitologia clássica, Narciso é o jovem de extraordinária beleza que rejeita o amor da ninfa Eco
+                    e se apaixona pelo seu próprio reflexo nas águas de uma fonte límpida, definhando até a morte por não
+                    conseguir se separar de sua própria imagem.
+                </p>
+                <p>
+                    Nos tempos atuais, o espelho da água transformou-se nas telas reluzentes dos smartphones, nas métricas
+                    de engajamento das redes sociais, nos filtros de embelezamento e na necessidade constante de projetar uma vida impecável.
+                    A psicologia da imagem investiga como a hipervalorização da casca exterior pode sufocar o <em>Eu Real</em>, gerando solidão,
+                    fragilidade emocional e esvaziamento das relações humanas.
+                </p>
+
+                <h3>A Ninfa Eco e a Alteridade</h3>
+                <p>
+                    A dinâmica de Narciso não existe no vácuo: ela necessita de "Ecos" — pessoas reduzidas a meros espelhos cuja função
+                    é devolver aplausos, admiração e validação incondicional. Quando o outro perde seu valor intrínseco e passa a ser apenas
+                    um instrumento de sustentação do ego, a alteridade desaparece.
+                </p>
+
+                <h3>Como Funciona a Pontuação</h3>
+                <p>O questionário conta com 20 questões de múltipla escolha. Cada alternativa carrega uma pontuação de 1 a 5:</p>
+                <ul class="lista-pontuacao">
+                    <li><strong>Alternativa A (1 ponto):</strong> Baixo risco / Conexão real e autêntica.</li>
+                    <li><strong>Alternativa B (2 pontos):</strong> Risco baixo-moderado / Equilíbrio saudável.</li>
+                    <li><strong>Alternativa C (3 pontos):</strong> Risco moderado / Tendência à vaidade ou busca pontual de validação.</li>
+                    <li><strong>Alternativa D (4 pontos):</strong> Risco alto / Foco elevado na autoimagem e baixa empatia.</li>
+                    <li><strong>Alternativa E (5 pontos):</strong> Risco muito alto / Alinhamento forte com a dinâmica do mito (dependência de validação, instrumentalização do outro e negação de vulnerabilidades).</li>
+                </ul>
+                <p>
+                    Ao final, a soma total (de 20 a 100 pontos) indicará uma de quatro faixas reflexivas
+                    correspondente à dinâmica psicológica identificada.
+                </p>
+
+                <div class="acoes-informacoes">
+                    <button id="btn-voltar-inicio-de-info" class="btn-acao btn-secundario" type="button">← Voltar ao Início</button>
+                    <button id="btn-iniciar-de-info" class="btn-acao btn-primario" type="button">Começar Agora ➔</button>
+                </div>
+            </article>
+
+            <footer class="rodape-discreto">
+                <small>&copy; Questionário de Autoavaliação Reflexiva — Lígia Charão de Souza.<br>Todos os direitos reservados.</small>
+            </footer>
+        </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- JAVASCRIPT                                              -->
+    <!-- ======================================================= -->
+    <script>
+        // Dados das 20 questões
+        const questoes = [
+            {
+                id: 1,
+                enunciado: "1. Ao postar uma foto ou conquista nas redes sociais, como você lida com a falta de curtidas ou comentários?",
+                alternativas: [
+                    { letra: "A", texto: "Nem reparo na quantidade; posto apenas para registrar momentos para mim.", pontos: 1 },
+                    { letra: "B", texto: "Fico um pouco desapontado(a), mas sigo o dia normalmente.", pontos: 2 },
+                    { letra: "C", texto: "Verifico o celular algumas vezes para ver se o engajamento aumentou.", pontos: 3 },
+                    { letra: "D", texto: "Sinto frustração e penso em apagar o post para não parecer \"fracassado(a)\".", pontos: 4 },
+                    { letra: "E", texto: "Sinto um vazio imenso e muita raiva; minha autoimagem depende do reconhecimento dos outros.", pontos: 5 }
+                ]
+            },
+            {
+                id: 2,
+                enunciado: "2. Quando alguém tenta conversar com você sobre um problema pessoal dele(a), qual é a sua reação interna?",
+                alternativas: [
+                    { letra: "A", texto: "Escuto com empatia genuína e me coloco à disposição para ajudar.", pontos: 1 },
+                    { letra: "B", texto: "Presto atenção e tento dar bons conselhos.", pontos: 2 },
+                    { letra: "C", texto: "Escuto, mas rapidamente me pego pensando nos meus próprios problemas.", pontos: 3 },
+                    { letra: "D", texto: "Fico impaciente e tento redirecionar o assunto para algo sobre mim.", pontos: 4 },
+                    { letra: "E", texto: "Acho um tédio; as dores dos outros não têm relevância para mim.", pontos: 5 }
+                ]
+            },
+            {
+                id: 3,
+                enunciado: "3. Como você lida com críticas construtivas sobre seu trabalho ou comportamento?",
+                alternativas: [
+                    { letra: "A", texto: "Reflito sobre o feedback e agradeço pela oportunidade de melhorar.", pontos: 1 },
+                    { letra: "B", texto: "Fico desconfortável de início, mas analiso para ver se a pessoa tem razão.", pontos: 2 },
+                    { letra: "C", texto: "Mudo de assunto ou justifico o erro imediatamente para não parecer fraco(a).", pontos: 3 },
+                    { letra: "D", texto: "Sinto uma raiva profunda e passo a desqualificar a capacidade da pessoa que me criticou.", pontos: 4 },
+                    { letra: "E", texto: "Enxergo a crítica como um ataque pessoal intolerável e corto relações ou busco me vingar.", pontos: 5 }
+                ]
+            },
+            {
+                id: 4,
+                enunciado: "4. Em um relacionamento (amoroso ou amizade), o que você mais valoriza no(a) parceiro(a)?",
+                alternativas: [
+                    { letra: "A", texto: "A troca genuína, a vulnerabilidade e quem a pessoa realmente é.", pontos: 1 },
+                    { letra: "B", texto: "A cumplicidade e o apoio mútuo no dia a dia.", pontos: 2 },
+                    { letra: "C", texto: "O fato de a pessoa me elogiar e me fazer sentir bem comigo mesmo(a).", pontos: 3 },
+                    { letra: "D", texto: "O quanto o status ou a beleza da pessoa melhora a minha própria imagem perante os outros.", pontos: 4 },
+                    { letra: "E", texto: "A capacidade da pessoa de me admirar incondicionalmente e servir às minhas necessidades (uma \"Eco\").", pontos: 5 }
+                ]
+            },
+            {
+                id: 5,
+                enunciado: "5. Qual é a sua relação com o seu \"Eu Real\" (suas falhas, medos e imperfeições)?",
+                alternativas: [
+                    { letra: "A", texto: "Aceito minhas imperfeições como parte natural de ser humano.", pontos: 1 },
+                    { letra: "B", texto: "Busco evoluir, mas sem me punir excessivamente pelos erros.", pontos: 2 },
+                    { letra: "C", texto: "Escondo minhas fraquezas da maioria das pessoas, mostrando apenas para os mais íntimos.", pontos: 3 },
+                    { letra: "D", texto: "Detesto demonstrar qualquer fragilidade; finjo para todos que tenho uma vida perfeita.", pontos: 4 },
+                    { letra: "E", texto: "Nego totalmente minhas falhas; acredito genuinamente que sou superior e impecável.", pontos: 5 }
+                ]
+            },
+            {
+                id: 6,
+                enunciado: "6. Quando você passa muito tempo olhando seu próprio reflexo (espelho, tela da câmera do celular ou seu perfil nas redes), o que sente?",
+                alternativas: [
+                    { letra: "A", texto: "Apenas confiro se estou arrumado(a) e sigo em frente.", pontos: 1 },
+                    { letra: "B", texto: "Gosto do que vejo, sem grandes obsessões.", pontos: 2 },
+                    { letra: "C", texto: "Fico analisando pequenos defeitos para tentar corrigi-los.", pontos: 3 },
+                    { letra: "D", texto: "Sinto um fascínio pela minha imagem, mas uma angústia por ter que mantê-la perfeita.", pontos: 4 },
+                    { letra: "E", texto: "Fico preso(a) à minha própria imagem, incapaz de focar no mundo ao meu redor.", pontos: 5 }
+                ]
+            },
+            {
+                id: 7,
+                enunciado: "7. Quando você vê alguém alcançando um sucesso maior que o seu, como se sente?",
+                alternativas: [
+                    { letra: "A", texto: "Fico genuinamente feliz pela pessoa.", pontos: 1 },
+                    { letra: "B", texto: "Sinto uma leve inveja saudável, que me motiva a buscar meus objetivos.", pontos: 2 },
+                    { letra: "C", texto: "Sinto desconforto e tento encontrar algum defeito na conquista da pessoa.", pontos: 3 },
+                    { letra: "D", texto: "Sinto ressentimento profundo por achar que eu merecia mais destaque do que ela.", pontos: 4 },
+                    { letra: "E", texto: "Sinto inveja destrutiva e uma sensação intolerável de humilhação pessoal.", pontos: 5 }
+                ]
+            },
+            {
+                id: 8,
+                enunciado: "8. Na sua rotina, quanto tempo da sua energia mental é voltada puramente para a sua autoimagem e performance?",
+                alternativas: [
+                    { letra: "A", texto: "Apenas o necessário para me cuidar; o resto divido com hobbies, causas e amigos.", pontos: 1 },
+                    { letra: "B", texto: "Um tempo equilibrado entre autocuidado e vida interpessoal.", pontos: 2 },
+                    { letra: "C", texto: "Uma parte considerável do dia é gasta pensando no que os outros pensam de mim.", pontos: 3 },
+                    { letra: "D", texto: "A maior parte do dia é dedicada a planejar como parecer invencível, de sucesso e atraente.", pontos: 4 },
+                    { letra: "E", texto: "100% da minha energia; a vida inteira gira em torno do meu ego e de suprir minha imagem.", pontos: 5 }
+                ]
+            },
+            {
+                id: 9,
+                enunciado: "9. Quando uma pessoa se afasta de você ou termina uma relação, como você reage?",
+                alternativas: [
+                    { letra: "A", texto: "Sinto a dor da perda, mas respeito a decisão e reflito sobre o relacionamento.", pontos: 1 },
+                    { letra: "B", texto: "Fico triste, mas entendo que nem todas as conexões duram para sempre.", pontos: 2 },
+                    { letra: "C", texto: "Fico com o ego ferido e procuro logo outra pessoa para preencher o vazio.", pontos: 3 },
+                    { letra: "D", texto: "Fico furioso(a) por me sentir rejeitado(a) e tento provar que a pessoa perdeu o \"melhor\".", pontos: 4 },
+                    { letra: "E", texto: "Sinto um colapso/vazio existencial e descarto a pessoa friamente, fingindo que ela nunca existiu.", pontos: 5 }
+                ]
+            },
+            {
+                id: 10,
+                enunciado: "10. Como você lida com regras, filas e limites sociais em geral?",
+                alternativas: [
+                    { letra: "A", texto: "Respeito sempre, pois sei que todos têm os mesmos direitos.", pontos: 1 },
+                    { letra: "B", texto: "Respeito, embora às vezes me incomode com a espera.", pontos: 2 },
+                    { letra: "C", texto: "Tento dar um \"jeitinho\" pontual se estiver com muita pressa.", pontos: 3 },
+                    { letra: "D", texto: "Acho que pessoas extraordinárias como eu deveriam ter exceções e privilégios.", pontos: 4 },
+                    { letra: "E", texto: "Sinto que regras não se aplicam a mim; estou acima das convenções comuns.", pontos: 5 }
+                ]
+            },
+            {
+                id: 11,
+                enunciado: "11. Como você se sente ao ter que pedir desculpas por um erro feio que cometeu?",
+                alternativas: [
+                    { letra: "A", texto: "Peço desculpas sinceras e tento reparar o dano imediatamente.", pontos: 1 },
+                    { letra: "B", texto: "Custa um pouco ao ego, mas peço perdão e assumo a responsabilidade.", pontos: 2 },
+                    { letra: "C", texto: "Peço desculpas defensivas (\"Desculpa, mas você também errou...\").", pontos: 3 },
+                    { letra: "D", texto: "Evito ao máximo pedir desculpas; prefiro me fazer de vítima da situação.", pontos: 4 },
+                    { letra: "E", texto: "Nunca peço desculpas; admitir um erro destruiria a fachada de perfeição que preciso manter.", pontos: 5 }
+                ]
+            },
+            {
+                id: 12,
+                enunciado: "12. O que você sente quando está completamente sozinho(a), sem celular e sem público para observar você?",
+                alternativas: [
+                    { letra: "A", texto: "Paz, tranquilidade e boa companhia de mim mesmo(a).", pontos: 1 },
+                    { letra: "B", texto: "Um pouco de tédio, mas aproveito para descansar a mente.", pontos: 2 },
+                    { letra: "C", texto: "Certo desconforto; prefiro estar me distraindo com conteúdos.", pontos: 3 },
+                    { letra: "D", texto: "Uma angústia crescente e a sensação de que não existo sem o olhar dos outros.", pontos: 4 },
+                    { letra: "E", texto: "Um vazio insuportável e assustador; encarar meu interior sem espelhos é aterrorizante.", pontos: 5 }
+                ]
+            },
+            {
+                id: 13,
+                enunciado: "13. Ao conversar em grupo, qual é o seu padrão de fala mais comum?",
+                alternativas: [
+                    { letra: "A", texto: "Escuto mais do que falo e dou espaço para todos participarem.", pontos: 1 },
+                    { letra: "B", texto: "Alterno entre contar minhas experiências e ouvir as dos outros.", pontos: 2 },
+                    { letra: "C", texto: "Costumo puxar os assuntos para experiências que eu já vivi.", pontos: 3 },
+                    { letra: "D", texto: "Interrompo frequentemente para monopolizar a atenção e falar das minhas conquistas.", pontos: 4 },
+                    { letra: "E", texto: "Só me interesso pela conversa se eu for o centro absoluto das atenções.", pontos: 5 }
+                ]
+            },
+            {
+                id: 14,
+                enunciado: "14. Se você pudesse escolher entre ser amplamente amado(a) por poucas pessoas em sua essência ou admirado(a)/invejado(a) por milhares de desconhecidos por sua imagem, o que escolheria?",
+                alternativas: [
+                    { letra: "A", texto: "Amado(a) na minha essência por poucas pessoas, com certeza.", pontos: 1 },
+                    { letra: "B", texto: "Prefiro laços profundos, embora o reconhecimento de muitos seja agradável.", pontos: 2 },
+                    { letra: "C", texto: "Fico dividido(a) entre a profundidade do amor e o brilho da admiração.", pontos: 3 },
+                    { letra: "D", texto: "Prefiro a admiração e a inveja de milhares; a validação da massa me sustenta.", pontos: 4 },
+                    { letra: "E", texto: "Apenas a admiração e a adoração de todos importam; o amor profundo e vulnerável me assusta.", pontos: 5 }
+                ]
+            },
+            {
+                id: 15,
+                enunciado: "15. Quando alguém demonstra uma fragilidade emocional profunda perto de você, o que você sente?",
+                alternativas: [
+                    { letra: "A", texto: "Empatia, acolhimento e desejo de proteger a pessoa.", pontos: 1 },
+                    { letra: "B", texto: "Respeito o momento e tento ajudar como posso.", pontos: 2 },
+                    { letra: "C", texto: "Um pouco de desconforto por não saber muito bem como lidar com emoções intensas.", pontos: 3 },
+                    { letra: "D", texto: "Desprezo velado; considero a demonstração de fraqueza um sinal de inferioridade.", pontos: 4 },
+                    { letra: "E", texto: "Asco e repulsa; para mim, vulnerabilidade é um defeito inaceitável.", pontos: 5 }
+                ]
+            },
+            {
+                id: 16,
+                enunciado: "16. Como você enxerga as pessoas que interagem com você no dia a dia?",
+                alternativas: [
+                    { letra: "A", texto: "Como indivíduos únicos, com histórias e sentimentos valiosos.", pontos: 1 },
+                    { letra: "B", texto: "Como companheiros de jornada, com quem troco experiências.", pontos: 2 },
+                    { letra: "C", texto: "Como contatos que podem ou não me agregar algo positivo.", pontos: 3 },
+                    { letra: "D", texto: "Como degraus ou peças de xadrez para eu alcançar meus objetivos e ter validação.", pontos: 4 },
+                    { letra: "E", texto: "Como meros espelhos (\"Ecos\") que existem apenas para refletir minha grandeza.", pontos: 5 }
+                ]
+            },
+            {
+                id: 17,
+                enunciado: "17. Ao planejar um objetivo pessoal, o que mais motiva sua determinação?",
+                alternativas: [
+                    { letra: "A", texto: "A autoevolução, o aprendizado e a satisfação interna.", pontos: 1 },
+                    { letra: "B", texto: "O desejo de ter uma vida estável e proporcionar o bem aos meus.", pontos: 2 },
+                    { letra: "C", texto: "O desejo de ser reconhecido(a) e elogiado(a) pelo meu esforço.", pontos: 3 },
+                    { letra: "D", texto: "O desejo de provar para todos que sou superior e ser invejado(a).", pontos: 4 },
+                    { letra: "E", texto: "O poder absoluto e a confirmação de que sou uma figura grandiosa e intocável.", pontos: 5 }
+                ]
+            },
+            {
+                id: 18,
+                enunciado: "18. Como você reage quando não ganha o lugar de destaque ou o prêmio principal em uma competição/evento?",
+                alternativas: [
+                    { letra: "A", texto: "Parabenizo o vencedor e fico satisfeito(a) com meu desempenho.", pontos: 1 },
+                    { letra: "B", texto: "Fico chateado(a), mas reconheço o mérito de quem venceu.", pontos: 2 },
+                    { letra: "C", texto: "Digo a mim mesmo(a) que o sistema de avaliação foi injusto.", pontos: 3 },
+                    { letra: "D", texto: "Acuso o evento de estar \"manipulado\" e desdenho do valor do prêmio.", pontos: 4 },
+                    { letra: "E", texto: "Entro em fúria ou colapso; não aceito nada menos que o topo absoluto.", pontos: 5 }
+                ]
+            },
+            {
+                id: 19,
+                enunciado: "19. Se alguém aponta uma incoerência entre o que você prega nas redes/público e o que você vive na prática, como você age?",
+                alternativas: [
+                    { letra: "A", texto: "Reflito sinceramente sobre a incoerência e tento me alinhar.", pontos: 1 },
+                    { letra: "B", texto: "Fico envergonhado(a) e tento corrigir meu comportamento.", pontos: 2 },
+                    { letra: "C", texto: "Minimizo a situação dizendo que \"ninguém é perfeito\".", pontos: 3 },
+                    { letra: "D", texto: "Inverto a culpa, atacando a moral da pessoa que apontou a incoerência.", pontos: 4 },
+                    { letra: "E", texto: "Minto descaradamente ou destruo a reputação da pessoa para manter a minha fachada ilesa.", pontos: 5 }
+                ]
+            },
+            {
+                id: 20,
+                enunciado: "20. O que significa para você o aviso do oráculo: \"viverá muito, desde que jamais conheça a si mesmo\"?",
+                alternativas: [
+                    { letra: "A", texto: "Um alerta para não viver de aparências e ter a coragem de encarar quem realmente sou.", pontos: 1 },
+                    { letra: "B", texto: "Uma lição sobre o perigo de se fechar no próprio ego e esquecer o mundo.", pontos: 2 },
+                    { letra: "C", texto: "Uma reflexão sobre como é difícil olhar para os nossos próprios defeitos sem sofrer.", pontos: 3 },
+                    { letra: "D", texto: "Algo distante; não acho que ter uma autoimagem forte seja um problema.", pontos: 4 },
+                    { letra: "E", texto: "Não vejo problema; prefiro viver a ilusão da minha perfeição a encarar qualquer fraqueza.", pontos: 5 }
+                ]
+            }
+        ];
+
+        // Perfis de resultado e mascotes
+        const faixasResultado = [
+            {
+                min: 20, max: 35,
+                titulo: "Conexão Autêntica / Baixo Risco",
+                icone: "🌟",
+                descricao: "O participante tem um ego estruturado de forma saudável. Consegue olhar para dentro sem medo, aceita imperfeições e constrói relacionamentos reais baseados na empatia e na vulnerabilidade. Não depende do 'reflexo no lago' para existir.",
+                pet: {
+                    nome: "Lumi (O Guardião da Autenticidade)",
+                    imagem: "img/Lumi.png",
+                    descricao: "Um sereno e caloroso companheiro de reflexão, com olhos brilhantes e sem máscaras. Uma criaturinha acolhedora feita de luz e afeto, que abraça com sinceridade e valoriza a beleza real que existe por dentro."
+                }
+            },
+            {
+                min: 36, max: 55,
+                titulo: "Vaidade / Oscilação Moderada",
+                icone: "🪞",
+                descricao: "Exibe traços comuns da sociedade contemporânea: busca de validação pontual e preocupação com a imagem. O risco narcisista é baixo, mas há momentos de desatenção às necessidades do outro devido ao excesso de foco no próprio umbigo.",
+                pet: {
+                    nome: "Glammy (O Espelhinho Curioso)",
+                    imagem: "img/Glammy.png",
+                    descricao: "Um pet charmoso, expressivo e colorido, que adora pentear o topete e conferir seu reflexo em poças d'água. Ele é carismático e afetuoso, mas às vezes precisa ser lembrado de olhar ao redor e notar os amigos."
+                }
+            },
+            {
+                min: 56, max: 75,
+                titulo: "Tendência Narcisista Elevada / Alerta de Isolamento",
+                icone: "📱",
+                descricao: "A dependência do olhar externo ('curtidas', elogios, status) é alta. Há dificuldade em aceitar críticas e em se conectar com a dor alheia. A imagem projetada está começando a sufocar o 'Eu Real', gerando ansiedade e relacionamentos mais superficiais.",
+                pet: {
+                    nome: "Flash (O Caçador de Aplausos)",
+                    imagem: "img/Flash.png",
+                    descricao: "Um pet estiloso que vive usando óculos de sol espelhados e segurando um mini refletor. Por trás da pose confiante, esconde olhinhos ansiosos esperando por aplausos constantes para não se sentir invisível."
+                }
+            },
+            {
+                min: 76, max: 100,
+                titulo: "Alto Risco de Adoecimento Narcisista / Morte da Alteridade",
+                icone: "👑",
+                descricao: "Alinhamento forte com a tragédia do mito. O participante vive em função de uma fachada grandiosa para proteger um interior vulnerável e não trabalhado. Há uma recusa em 'conhecer a si mesmo' (autocriticidade), além de uma tendência a instrumentalizar as pessoas ao redor. Alto risco de isolamento, burnout emocional e colapso afetivo.",
+                pet: {
+                    nome: "Narcisus (O Monarca de Cristal)",
+                    imagem: "img/Narcisus.png",
+                    descricao: "Uma criatura majestosa com coroa dourada e capa reluzente, mas feita de cristal translúcido e frágil. Fica hipnotizada diante do espelho d'água, intocável e grandiosa, porém isolada em sua própria redoma congelada."
+                }
+            }
+        ];
+
+        // Estado
+        let indiceAtual = 0;
+        const respostas = new Array(questoes.length).fill(null);
+
+        // Referências DOM — telas
+        const telaInicio       = document.getElementById("tela-inicio");
+        const telaQuestionario = document.getElementById("tela-questionario");
+        const telaResultado    = document.getElementById("tela-resultado");
+        const telaInformacoes  = document.getElementById("tela-informacoes");
+        const todasTelas       = [telaInicio, telaQuestionario, telaResultado, telaInformacoes];
+
+        // Referências DOM — botões
+        const btnIniciar            = document.getElementById("btn-iniciar");
+        const btnMaisInfoInicio     = document.getElementById("btn-mais-informacoes-inicio");
+        const btnVoltarInicioDeInfo = document.getElementById("btn-voltar-inicio-de-info");
+        const btnIniciarDeInfo      = document.getElementById("btn-iniciar-de-info");
+        const btnReiniciar          = document.getElementById("btn-reiniciar");
+        const btnInfoResultado      = document.getElementById("btn-info-resultado");
+        const btnDescerResultado    = document.getElementById("btn-descer-resultado");
+        const detalhesResultado     = document.getElementById("detalhes-resultado");
+        const btnAnterior           = document.getElementById("btn-anterior");
+        const btnProximo            = document.getElementById("btn-proximo");
+
+        // Referências DOM — questionário
+        const textoProgresso       = document.getElementById("texto-progresso");
+        const porcentagemProgresso = document.getElementById("porcentagem-progresso");
+        const barraProgressoVisual = document.getElementById("barra-progresso-visual");
+        const barraProgresso       = document.getElementById("barra-progresso");
+        const perguntaTitulo       = document.getElementById("pergunta-titulo");
+        const opcoesConteiner      = document.getElementById("opcoes-conteiner");
+
+        // Referências DOM — resultado
+        const pontuacaoNumero         = document.getElementById("pontuacao-numero");
+        const resultadoFaixaTitulo    = document.getElementById("resultado-faixa-titulo");
+        const resultadoFaixaDescricao = document.getElementById("resultado-faixa-descricao");
+        const petImagem               = document.getElementById("pet-imagem");
+        const petPlaceholderVisual    = document.getElementById("pet-placeholder-visual");
+        const iconeMascotePlaceholder = document.getElementById("icone-mascote-placeholder");
+        const petNome                 = document.getElementById("pet-nome");
+        const petDescricao            = document.getElementById("pet-descricao");
+
+        /* ---- Controle de telas ---- */
+        function mudarTela(telaAlvo) {
+            todasTelas.forEach(t => t.classList.remove("ativa"));
+            telaAlvo.classList.add("ativa");
+            window.scrollTo({ top: 0, behavior: "instant" });
+        }
+
+        /* ---- Renderiza questão ---- */
+        function carregarQuestao(indice) {
+            const questao = questoes[indice];
+            const progressoAtual = indice + 1;
+            const percentual = Math.round((progressoAtual / questoes.length) * 100);
+
+            textoProgresso.textContent = `Questão ${progressoAtual} de ${questoes.length}`;
+            porcentagemProgresso.textContent = `${percentual}%`;
+            barraProgresso.value = progressoAtual;
+            barraProgressoVisual.style.width = `${percentual}%`;
+            perguntaTitulo.textContent = questao.enunciado;
+            opcoesConteiner.innerHTML = "";
+
+            questao.alternativas.forEach(alt => {
+                const label = document.createElement("label");
+                label.className = "opcao-item";
+                if (respostas[indice] === alt.pontos) label.classList.add("selecionada");
+
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = "resposta-atual";
+                input.value = alt.pontos;
+                if (respostas[indice] === alt.pontos) input.checked = true;
+
+                input.addEventListener("change", () => {
+                    respostas[indice] = alt.pontos;
+                    opcoesConteiner.querySelectorAll(".opcao-item").forEach(op => op.classList.remove("selecionada"));
+                    label.classList.add("selecionada");
+                    atualizarBotoesNavegacao();
+                });
+
+                const badge = document.createElement("span");
+                badge.className = "opcao-badge";
+                badge.textContent = alt.letra;
+
+                const texto = document.createElement("span");
+                texto.className = "opcao-texto";
+                texto.textContent = alt.texto;
+
+                label.appendChild(input);
+                label.appendChild(badge);
+                label.appendChild(texto);
+                opcoesConteiner.appendChild(label);
+            });
+
+            atualizarBotoesNavegacao();
+        }
+
+        function atualizarBotoesNavegacao() {
+            btnAnterior.disabled  = (indiceAtual === 0);
+            const respondida = (respostas[indiceAtual] !== null);
+            const ehUltima   = (indiceAtual === questoes.length - 1);
+
+            btnProximo.disabled   = !respondida;
+            btnProximo.textContent = ehUltima ? "Ver Resultado ✨" : "Próxima ➔";
+
+            // Alterna a classe de estilo do botão conforme a etapa
+            if (ehUltima) {
+                btnProximo.classList.remove("btn-primario");
+                btnProximo.classList.add("btn-finalizar-estilo");
+            } else {
+                btnProximo.classList.remove("btn-finalizar-estilo");
+                btnProximo.classList.add("btn-primario");
+            }
+        }
+
+        function irParaProxima() {
+            if (respostas[indiceAtual] === null) {
+                alert("Por favor, selecione uma alternativa para continuar.");
+                return;
+            }
+            if (indiceAtual === questoes.length - 1) {
+                finalizarQuestionario();
+            } else {
+                indiceAtual++;
+                carregarQuestao(indiceAtual);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function irParaAnterior() {
+            if (indiceAtual > 0) {
+                indiceAtual--;
+                carregarQuestao(indiceAtual);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+
+        function finalizarQuestionario() {
+            if (respostas.some(r => r === null)) {
+                alert("Por favor, responda a todas as questões antes de finalizar.");
+                return;
+            }
+
+            const totalPontos = respostas.reduce((acc, val) => acc + val, 0);
+            pontuacaoNumero.textContent = totalPontos;
+
+            const faixa = faixasResultado.find(f => totalPontos >= f.min && totalPontos <= f.max) || faixasResultado[0];
+
+            resultadoFaixaTitulo.textContent    = faixa.titulo;
+            resultadoFaixaDescricao.textContent = faixa.descricao;
+            petNome.textContent                 = faixa.pet.nome;
+            petDescricao.textContent            = faixa.pet.descricao;
+            iconeMascotePlaceholder.textContent = faixa.icone || "✨";
+
+            if (faixa.pet.imagem) {
+                petImagem.src = faixa.pet.imagem;
+                petImagem.alt = faixa.pet.nome;
+                petImagem.hidden = false;
+                petPlaceholderVisual.hidden = true;
+
+                petImagem.onerror = () => {
+                    petImagem.hidden = true;
+                    petPlaceholderVisual.hidden = false;
+                };
+                petImagem.onload = () => {
+                    petImagem.hidden = false;
+                    petPlaceholderVisual.hidden = true;
+                };
+            } else {
+                petImagem.hidden = true;
+                petPlaceholderVisual.hidden = false;
+            }
+
+            mudarTela(telaResultado);
+        }
+
+        function reiniciarQuestionario() {
+            indiceAtual = 0;
+            respostas.fill(null);
+            carregarQuestao(indiceAtual);
+            mudarTela(telaInicio);
+        }
+
+        function iniciarQuestionario() {
+            indiceAtual = 0;
+            carregarQuestao(indiceAtual);
+            mudarTela(telaQuestionario);
+        }
+
+        /* ---- Event Listeners ---- */
+        btnIniciar.addEventListener("click", iniciarQuestionario);
+        btnIniciarDeInfo.addEventListener("click", iniciarQuestionario);
+        btnMaisInfoInicio.addEventListener("click", () => mudarTela(telaInformacoes));
+        btnInfoResultado.addEventListener("click", () => mudarTela(telaInformacoes));
+        btnVoltarInicioDeInfo.addEventListener("click", () => mudarTela(telaInicio));
+        btnReiniciar.addEventListener("click", reiniciarQuestionario);
+        btnAnterior.addEventListener("click", irParaAnterior);
+        btnProximo.addEventListener("click", irParaProxima);
+        btnDescerResultado.addEventListener("click", () => {
+            detalhesResultado.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    </script>
+</body>
+</html>
