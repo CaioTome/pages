@@ -107,8 +107,8 @@ Para suportar peças de múltiplas escolhas e reações defensivas apenas com mo
 7. **Pássaro Uratal** *(máx. 2)*: Anda para casas vazias como Bispo e não captura. Sempre que se move, ativa seu grito para o próximo turno do oponente: qualquer peça inimiga escolhida para agir só poderá ir para a(s) casa(s) legal(is) que maximizem a distância até aquele Pássaro.
 8. **Bela Adormecida** *(até 8)*: Anda 1 casa para frente e captura 1 casa diretamente à frente.
 9. **Perereca** *(máx. 2)*: Anda e captura como Rei; se houver um inimigo adjacente com a casa imediatamente atrás dele vazia (na mesma direção), pode saltar por cima dele para essa casa vazia sem capturá-lo.
-10. **Goham** *(máx. 2)*: Anda como Peão (sem captura). Aura passiva: peças inimigas adjacentes ao Goham ficam distraídas — não podem se mover, usar habilidades nem atacar o Goham (precisando ser abatido à distância ou salvo por terceiros).
-11. **Mirra** *(até 8)*: Mesma mecânica da *Bela Adormecida* (anda 1 casa para frente e captura 1 casa à frente), com identidade visual própria.
+10. **Goham** *(máx. 2)*: Gata preta gordinha. Anda como Peão (sem captura). Aura passiva: peças inimigas adjacentes à Goham ficam distraídas — não podem se mover, usar habilidades nem atacar a Goham (precisando ser abatida à distância ou salva por terceiros).
+11. **Mirra** *(até 8)*: Pinscher pretinha. Mesma mecânica da *Bela Adormecida* (anda 1 casa para frente e captura 1 casa à frente), com identidade visual própria.
 12. **Quero-quero** *(máx. 2)*: Anda 1 casa para frente (vazia). Captura dando um rasante de **1 a 4 casas em linha reta à frente** (exigindo caminho livre), ocupando a casa da vítima.
 13. **Tartaruga Maligna** *(máx. 2)*: Anda 1 casa para frente (vazia). Ataca a peça inimiga imediatamente à frente sem sair do lugar, transformando-a em **Sapo**.
 14. **Pimentinha** *(máx. 2)*: Anda e captura como Peão. Ao final do seu movimento, pode optar por explodir: sacrifica-se e congela por **1 rodada** todas as peças nas **3 casas à frente** (diagonal-esq, frente, diagonal-dir), impedindo-as de agir no próximo turno.

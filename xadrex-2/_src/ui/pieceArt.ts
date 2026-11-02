@@ -274,33 +274,78 @@ export function getPieceSvg(pieceId: PieceId, player: Player, size: number = 64)
       `;
       break;
 
-    case 'goham':
+    case 'goham': {
+      const catStroke = isWhite ? '#09090b' : '#cbd5e1';
       glyph = `
-        <!-- Goham: Fofura Hipnótica e Bochechuda -->
-        <circle cx="32" cy="34" r="12" fill="#fef08a" stroke="${detailColor}" stroke-width="2"/>
-        <ellipse cx="25" cy="37" rx="3" ry="2" fill="#f472b6"/>
-        <ellipse cx="39" cy="37" rx="3" ry="2" fill="#f472b6"/>
-        <circle cx="27" cy="31" r="2" fill="${detailColor}"/>
-        <circle cx="37" cy="31" r="2" fill="${detailColor}"/>
-        <path d="M30 34 Q32 36 34 34" fill="none" stroke="${detailColor}" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="32" cy="18" r="3" fill="#ec4899"/>
+        <!-- Goham: Gata Preta Gordinha -->
+        <!-- Rabinho enrolado -->
+        <path d="M43 43 C49.5 41 50.5 33.5 46 30.5" fill="none" stroke="${catStroke}" stroke-width="4.6" stroke-linecap="round"/>
+        <path d="M43 43 C49.5 41 50.5 33.5 46 30.5" fill="none" stroke="#18181b" stroke-width="3" stroke-linecap="round"/>
+        <!-- Corpinho gordinho e rechonchudo -->
+        <ellipse cx="32" cy="39.5" rx="13.5" ry="9.5" fill="#18181b" stroke="${catStroke}" stroke-width="1.6"/>
+        <!-- Barriguinha fofa sutil -->
+        <ellipse cx="32" cy="41" rx="7.5" ry="5.5" fill="#27272a"/>
+        <!-- Orelhas de gatinha -->
+        <polygon points="22.5,23 23.5,14 30,19.5" fill="#18181b" stroke="${catStroke}" stroke-width="1.6" stroke-linejoin="round"/>
+        <polygon points="41.5,23 40.5,14 34,19.5" fill="#18181b" stroke="${catStroke}" stroke-width="1.6" stroke-linejoin="round"/>
+        <polygon points="24.2,21.5 24.8,16.4 28.6,19.6" fill="#f472b6"/>
+        <polygon points="39.8,21.5 39.2,16.4 35.4,19.6" fill="#f472b6"/>
+        <!-- Cabecinha bochechuda -->
+        <ellipse cx="32" cy="26.5" rx="10.8" ry="8.5" fill="#18181b" stroke="${catStroke}" stroke-width="1.6"/>
+        <!-- Olhões amarelos hipnóticos de gata preta -->
+        <circle cx="27.8" cy="26" r="2.9" fill="#facc15"/>
+        <circle cx="36.2" cy="26" r="2.9" fill="#facc15"/>
+        <ellipse cx="27.8" cy="26" rx="1.2" ry="1.9" fill="#09090b"/>
+        <ellipse cx="36.2" cy="26" rx="1.2" ry="1.9" fill="#09090b"/>
+        <circle cx="28.5" cy="25.1" r="0.7" fill="#ffffff"/>
+        <circle cx="36.9" cy="25.1" r="0.7" fill="#ffffff"/>
+        <!-- Bochechas fofas, narizinho e bigodinhos -->
+        <ellipse cx="24" cy="29" rx="2.1" ry="1.2" fill="#f472b6" opacity="0.75"/>
+        <ellipse cx="40" cy="29" rx="2.1" ry="1.2" fill="#f472b6" opacity="0.75"/>
+        <polygon points="30.9,28.2 33.1,28.2 32,29.7" fill="#fb7185"/>
+        <path d="M29.8 30.6 Q31 31.9 32 30.5 Q33 31.9 34.2 30.6" fill="none" stroke="#e2e8f0" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M21 27.5 L17.5 26.8 M21 29.5 L17.5 30.2 M43 27.5 L46.5 26.8 M43 29.5 L46.5 30.2" stroke="${catStroke}" stroke-width="1.1" stroke-linecap="round"/>
+        <!-- Patinhas gorduchas na frente -->
+        <ellipse cx="27.5" cy="46.5" rx="3" ry="2" fill="#18181b" stroke="#52525b" stroke-width="1.2"/>
+        <ellipse cx="36.5" cy="46.5" rx="3" ry="2" fill="#18181b" stroke="#52525b" stroke-width="1.2"/>
       `;
       break;
+    }
 
-    case 'mirra':
+    case 'mirra': {
+      const dogStroke = isWhite ? '#09090b' : '#cbd5e1';
       glyph = `
-        <!-- Mirra: Gatinha Branca Valente com Laço Vermelho -->
-        <circle cx="32" cy="34" r="10" fill="#ffffff" stroke="${detailColor}" stroke-width="2"/>
-        <polygon points="23,27 25,19 29,26" fill="#fbcfe8"/>
-        <polygon points="41,27 39,19 35,26" fill="#fbcfe8"/>
-        <circle cx="28" cy="33" r="2" fill="#0f172a"/>
-        <circle cx="36" cy="33" r="2" fill="#0f172a"/>
-        <path d="M31 36 L33 36" stroke="#f43f5e" stroke-width="2"/>
-        <!-- Lacinho -->
-        <polygon points="23,22 27,24 23,26" fill="#ef4444"/>
-        <polygon points="27,22 23,24 27,26" fill="#ef4444"/>
+        <!-- Mirra: Pinscher Pretinha (Preto e Canela, Orelhudinha) -->
+        <!-- Orelhões pontudos em pé típicos de Pinscher -->
+        <path d="M24 27 L17.5 12.5 L28.5 21.5 Z" fill="#18181b" stroke="${dogStroke}" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M40 27 L46.5 12.5 L35.5 21.5 Z" fill="#18181b" stroke="${dogStroke}" stroke-width="1.6" stroke-linejoin="round"/>
+        <polygon points="24,25 19.8,15.5 27.2,21.8" fill="#d97706"/>
+        <polygon points="40,25 44.2,15.5 36.8,21.8" fill="#d97706"/>
+        <!-- Corpinho esbelto e peito caramelo -->
+        <path d="M25 38 L39 38 L41 47 C36 49 28 49 23 47 Z" fill="#18181b" stroke="${dogStroke}" stroke-width="1.6" stroke-linejoin="round"/>
+        <polygon points="28.5,41 35.5,41 32,47" fill="#d97706"/>
+        <!-- Coleirinha vermelha com medalhinha dourada -->
+        <rect x="25.5" y="37.5" width="13" height="2.8" rx="1.4" fill="#ef4444"/>
+        <circle cx="32" cy="41" r="1.8" fill="#fbbf24" stroke="#78350f" stroke-width="0.7"/>
+        <!-- Cabecinha delicada de Pinscher -->
+        <ellipse cx="32" cy="29" rx="9" ry="8.2" fill="#18181b" stroke="${dogStroke}" stroke-width="1.6"/>
+        <!-- Focinho preto e canela característico -->
+        <ellipse cx="32" cy="33" rx="6" ry="4.2" fill="#d97706"/>
+        <!-- Sobrancelhas caramelo clássicas de Pinscher -->
+        <ellipse cx="28.2" cy="24.6" rx="1.7" ry="1.1" fill="#f59e0b"/>
+        <ellipse cx="35.8" cy="24.6" rx="1.7" ry="1.1" fill="#f59e0b"/>
+        <!-- Olhinhos vivos e expressivos -->
+        <circle cx="28" cy="28" r="2.3" fill="#09090b" stroke="#ffffff" stroke-width="0.9"/>
+        <circle cx="36" cy="28" r="2.3" fill="#09090b" stroke="#ffffff" stroke-width="0.9"/>
+        <circle cx="28.6" cy="27.3" r="0.8" fill="#ffffff"/>
+        <circle cx="36.6" cy="27.3" r="0.8" fill="#ffffff"/>
+        <!-- Focinho/narizinho brilhante e boquinha valente -->
+        <ellipse cx="32" cy="31.8" rx="2.3" ry="1.6" fill="#09090b"/>
+        <ellipse cx="31.4" cy="31.3" rx="0.7" ry="0.4" fill="#ffffff" opacity="0.8"/>
+        <path d="M30 34.4 Q32 35.8 34 34.4" fill="none" stroke="#451a03" stroke-width="1.2" stroke-linecap="round"/>
       `;
       break;
+    }
 
     case 'quero_quero':
       glyph = `
