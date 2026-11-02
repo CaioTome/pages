@@ -41,3 +41,4 @@ export class CurtainScreen {
     this.element.classList.add('hidden');
   }
 }
+

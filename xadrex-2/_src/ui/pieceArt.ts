@@ -354,3 +354,4 @@ export function getPieceSvg(pieceId: PieceId, player: Player, size: number = 64)
     </svg>
   `.trim();
 }
+

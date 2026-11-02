@@ -128,3 +128,4 @@ export interface PresetArmy {
 }
 
 export type OrientationMode = 'pc_fixed' | 'turn_rotate' | 'table_face_to_face';
+

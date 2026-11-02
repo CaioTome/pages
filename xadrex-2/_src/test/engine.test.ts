@@ -412,3 +412,4 @@ describe('Piece Abilities & Rules', () => {
     expect(nextState.board[6][2]).toBeNull();
   });
 });
+

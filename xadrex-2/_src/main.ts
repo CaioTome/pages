@@ -82,3 +82,4 @@ class GameController {
 window.addEventListener('DOMContentLoaded', () => {
   new GameController();
 });
+

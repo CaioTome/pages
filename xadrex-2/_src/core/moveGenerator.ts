@@ -1032,3 +1032,4 @@ export function isPlayerInCheck(board: Board, player: Player): boolean {
 export function colToLetter(c: number): string {
   return String.fromCharCode('a'.charCodeAt(0) + c);
 }
+

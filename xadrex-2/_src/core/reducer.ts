@@ -687,3 +687,4 @@ export function finalizeTurn(state: MatchState): MatchState {
     pendingReaction: null,
   };
 }
+

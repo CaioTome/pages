@@ -89,3 +89,4 @@ export class PieceInspector {
     this.overlay.classList.add('hidden');
   }
 }
+

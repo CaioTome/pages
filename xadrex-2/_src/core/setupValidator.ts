@@ -131,3 +131,4 @@ export function createStandardArmy(player: Player): Board {
 
   return board;
 }
+
