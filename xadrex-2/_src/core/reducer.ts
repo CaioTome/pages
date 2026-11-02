@@ -43,7 +43,7 @@ export function createInitialMatchState(
   // Rows 6 & 7 from whiteArmy
   for (let r = 6; r <= 7; r++) {
     for (let c = 0; c < 8; c++) {
-      if (whiteArmy[r][c]) {
+      if (whiteArmy[r]?.[c]) {
         board[r][c] = { ...whiteArmy[r][c]! };
       }
     }
@@ -52,7 +52,7 @@ export function createInitialMatchState(
   // Rows 0 & 1 from blackArmy
   for (let r = 0; r <= 1; r++) {
     for (let c = 0; c < 8; c++) {
-      if (blackArmy[r][c]) {
+      if (blackArmy[r]?.[c]) {
         board[r][c] = { ...blackArmy[r][c]! };
       }
     }

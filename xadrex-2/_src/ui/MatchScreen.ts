@@ -10,6 +10,7 @@ import {
   createInitialMatchState,
   GameEvent,
 } from '../core/reducer';
+import { createStandardArmy } from '../core/setupValidator';
 import { PIECE_CATALOG } from '../core/catalog';
 import { getPieceSvg } from './pieceArt';
 import { PieceInspector } from './PieceInspector';
@@ -30,8 +31,8 @@ export class MatchScreen {
     this.inspector = inspector;
     this.element = document.createElement('div');
     this.element.className = 'match-screen-container';
-    this.whiteArmy = [];
-    this.blackArmy = [];
+    this.whiteArmy = createStandardArmy('white');
+    this.blackArmy = createStandardArmy('black');
     this.state = createInitialMatchState(this.whiteArmy, this.blackArmy);
   }
 
@@ -55,7 +56,11 @@ export class MatchScreen {
   }
 
   private dispatch(event: GameEvent): void {
-    if (event.type === 'EXECUTE_ACTION' || event.type === 'RESPOND_GUARD') {
+    if (
+      event.type === 'EXECUTE_ACTION' ||
+      event.type === 'RESPOND_GUARD' ||
+      event.type === 'SELECT_MAGO_FIRST_TARGET'
+    ) {
       this.stateHistory.push(JSON.parse(JSON.stringify(this.state)));
     }
     this.state = gameReducer(this.state, event);

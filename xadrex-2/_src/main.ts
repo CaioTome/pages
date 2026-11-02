@@ -78,8 +78,14 @@ class GameController {
   }
 }
 
-// Initialize on DOM load
-window.addEventListener('DOMContentLoaded', () => {
+// Initialize on DOM load (or immediately if DOM is already ready)
+function bootstrap(): void {
   new GameController();
-});
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', bootstrap);
+} else {
+  bootstrap();
+}
 
